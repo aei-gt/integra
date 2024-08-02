@@ -1,0 +1,70 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-06-13 12:35:08.623579",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "id",
+  "employee_id",
+  "column_break_upcg",
+  "access_date_time",
+  "access_date",
+  "access_time"
+ ],
+ "fields": [
+  {
+   "fieldname": "id",
+   "fieldtype": "Data",
+   "label": "ID"
+  },
+  {
+   "fieldname": "employee_id",
+   "fieldtype": "Data",
+   "label": "Employee ID"
+  },
+  {
+   "fieldname": "access_date_time",
+   "fieldtype": "Data",
+   "label": "Access Date Time"
+  },
+  {
+   "fieldname": "access_time",
+   "fieldtype": "Data",
+   "label": "Access Time"
+  },
+  {
+   "fieldname": "access_date",
+   "fieldtype": "Data",
+   "label": "Access date"
+  },
+  {
+   "fieldname": "column_break_upcg",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-02 09:19:40.546363",
+ "modified_by": "Administrator",
+ "module": "INTEGRA",
+ "name": "Hik Vision Attendance",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

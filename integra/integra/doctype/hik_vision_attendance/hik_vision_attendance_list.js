@@ -4,8 +4,20 @@ frappe.listview_settings['Hik Vision Attendance'] = {
             frappe.call({
                 method: 'integra.hikvision.hikvision.fetch_hik_vision_records',
                 callback: function (response) {
-                    if (response.message) {
-                        frappe.msgprint(__('Records have been fetched and processed.'));
+                    if (response) {
+                        frappe.show_alert(__('Records have been fetched and processed.'));
+                        listview.refresh();
+                    }
+                }
+            });
+        });
+
+        listview.page.add_button(__('Delete Records'), function () {
+            frappe.call({
+                method: 'integra.hikvision.hikvision.delete_records',
+                callback: function (response) {
+                    if (response) {
+                        frappe.show_alert(__('Records have been Deleted.'));
                         listview.refresh();
                     }
                 }

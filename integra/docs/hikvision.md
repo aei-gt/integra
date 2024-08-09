@@ -65,12 +65,14 @@ pip install pyodbc
 - - Database Name: Name of the database.
 - - Database Table: Name of the table containing Hik Vision records.
 
+
 ![HikVision Settings](./hikvision-settings.png)
 
 6. Fetch Hik Vision Records
 
 - Go to the Hik Vision Attendance doctype in ERPNext.
 - Click on the button Fetch Hik Vision Records.
+
 
 ![HikVision Settings](./hik-vision-attendance.png)
 

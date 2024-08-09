@@ -1,5 +1,3 @@
-markdown
-Copy code
 # Integrating MS SQL with ERPNext and Fetching Hik Vision Records
 
 ## 1. Add Server to the ZeroTier Network

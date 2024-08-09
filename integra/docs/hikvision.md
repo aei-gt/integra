@@ -55,20 +55,24 @@ pip install pyodbc
 
 5. Configure HikVision Settings in ERPNext
 
-Login to your ERPNext site.
+-Login to your ERPNext site.
 
-- Navigate to HikVision Settings.
-- Configure the following:
--   Host: Your MS SQL Server's IP or hostname.
--   DB User: Database username.
--   DB Password: Database password.
--   Database Name: Name of the database.
--   Database Table: Name of the table containing Hik Vision records.
+- - Navigate to HikVision Settings.
+- - Configure the following:
+- - Host: Your MS SQL Server's IP or hostname.
+- - DB User: Database username.
+- - DB Password: Database password.
+- - Database Name: Name of the database.
+- - Database Table: Name of the table containing Hik Vision records.
+
+![HikVision Settings](./hikvision-settings.png)
 
 6. Fetch Hik Vision Records
 
 - Go to the Hik Vision Attendance doctype in ERPNext.
 - Click on the button Fetch Hik Vision Records.
+
+![HikVision Settings](./hik-vision-attendance.png)
 
 Wait for the records to be fetched from MS SQL Server into ERPNext.
 

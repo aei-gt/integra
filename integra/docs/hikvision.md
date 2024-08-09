@@ -59,11 +59,11 @@ Login to your ERPNext site.
 
 - Navigate to HikVision Settings.
 - Configure the following:
--- Host: Your MS SQL Server's IP or hostname.
--- DB User: Database username.
--- DB Password: Database password.
--- Database Name: Name of the database.
--- Database Table: Name of the table containing Hik Vision records.
+-   Host: Your MS SQL Server's IP or hostname.
+-   DB User: Database username.
+-   DB Password: Database password.
+-   Database Name: Name of the database.
+-   Database Table: Name of the table containing Hik Vision records.
 
 6. Fetch Hik Vision Records
 

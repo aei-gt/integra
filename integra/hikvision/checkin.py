@@ -10,6 +10,7 @@ def fetch_data():
     password = settings.get("password")
     database = settings.get("database")
     table = settings.get("table")
+    last_record_id = settings.get("last_hik_vision_record_id")
 
     conn_str = (
         'DRIVER={ODBC Driver 17 for SQL Server};'
@@ -21,6 +22,7 @@ def fetch_data():
     connection = pyodbc.connect(conn_str)
     cursor = connection.cursor()
 
+    # Adjust the query to filter records based on AccessDateTime greater than the last_record_id
     query = f"""
         SELECT 
             ID_Global, 
@@ -29,11 +31,12 @@ def fetch_data():
             AccessTime,
             AccessDateTime
         FROM {table}
+        WHERE AccessDateTime > ?
         GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
         ORDER BY AccessDateTime
     """
 
-    cursor.execute(query)
+    cursor.execute(query, (last_record_id,))
     columns = [column[0] for column in cursor.description]
     results = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
@@ -64,9 +67,10 @@ def fetch_hik_vision_records():
     # Update the last record ID in the settings
     settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
     if last_record:
-        settings.last_hik_vision_record_id = last_record['ID_Global']
+        settings.last_hik_vision_record_id = last_record['AccessDateTime']  # Updated to use AccessDateTime
         settings.save()
         frappe.db.commit()
+    print("Last fetched record ID:", settings.last_hik_vision_record_id)
 
 def process_records():
     records = frappe.get_all(

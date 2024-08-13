@@ -130,6 +130,15 @@ doc_events = {
 
 # Scheduled Tasks
 # ---------------
+scheduler_events = {
+    "cron": {
+        "*/1 * * * *": [
+            "integra.hikvision.checkin.fetch_hik_vision_records"
+        ]
+    }
+}
+
+
 
 # scheduler_events = {
 # 	"all": [

@@ -10,7 +10,8 @@
   "table",
   "column_break_yhth",
   "user",
-  "password"
+  "password",
+  "last_hik_vision_record_id"
  ],
  "fields": [
   {
@@ -41,12 +42,17 @@
    "fieldname": "table",
    "fieldtype": "Data",
    "label": "Table"
+  },
+  {
+   "fieldname": "last_hik_vision_record_id",
+   "fieldtype": "Data",
+   "label": "Last Hik Vision Record Id "
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-08-02 09:49:51.439237",
+ "modified": "2024-08-12 14:51:54.501479",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "HikVision Settings",

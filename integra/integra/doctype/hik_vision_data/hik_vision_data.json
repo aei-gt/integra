@@ -1,0 +1,64 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-15 14:06:17.621572",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "id",
+  "employee_id",
+  "access_date_time",
+  "column_break_fkzl",
+  "access_time",
+  "access_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "id"
+  },
+  {
+   "fieldname": "employee_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Id"
+  },
+  {
+   "fieldname": "access_date_time",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Access Date Time"
+  },
+  {
+   "fieldname": "access_time",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Access Time"
+  },
+  {
+   "fieldname": "access_date",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Access Date"
+  },
+  {
+   "fieldname": "column_break_fkzl",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-15 14:10:37.467247",
+ "modified_by": "Administrator",
+ "module": "INTEGRA",
+ "name": "Hik Vision Data",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -24,16 +24,16 @@ frappe.listview_settings['Hik Vision Attendance'] = {
         //     });
         // });
         
-        listview.page.add_button(__('Fetch Last Records'), function () {
-            frappe.call({
-                method: 'integra.hikvision.checkin.checkin',
-                callback: function (response) {
-                    if (response) {
-                        frappe.show_alert(__('Records have been Deleted.'));
-                        listview.refresh();
-                    }
-                }
-            });
-        });
+        // listview.page.add_button(__('Fetch Last Records'), function () {
+        //     frappe.call({
+        //         method: 'integra.hikvision.checkin.checkin',
+        //         callback: function (response) {
+        //             if (response) {
+        //                 frappe.show_alert(__('Records have been Deleted.'));
+        //                 listview.refresh();
+        //             }
+        //         }
+        //     });
+        // });
     }
 };

@@ -8,6 +8,7 @@ frappe.ui.form.on('Employee', {
     },
 
     custom_hik_vision_id: function(frm) {
+        frm.clear_table('custom_records');
         frappe.call({
             method: 'integra.events.hik_vision.get_data',
             args: {

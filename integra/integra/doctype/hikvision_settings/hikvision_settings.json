@@ -8,10 +8,11 @@
   "host",
   "database",
   "table",
-  "column_break_yhth",
   "user",
+  "column_break_yhth",
   "password",
-  "last_hik_vision_record_id"
+  "last_hik_vision_record_id",
+  "odbc_version"
  ],
  "fields": [
   {
@@ -47,12 +48,17 @@
    "fieldname": "last_hik_vision_record_id",
    "fieldtype": "Data",
    "label": "Last Hik Vision Record Id "
+  },
+  {
+   "fieldname": "odbc_version",
+   "fieldtype": "Data",
+   "label": "ODBC Version"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-08-12 14:51:54.501479",
+ "modified": "2024-08-20 05:26:34.927721",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "HikVision Settings",

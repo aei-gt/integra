@@ -7,7 +7,7 @@ frappe.ui.form.on('Employee', {
         });
     },
 
-    custom_hik_vision_id: function(frm) {
+    custom_hik_vision_data_of_employees: function(frm) {
         frappe.call({
             method: 'integra.events.hik_vision.get_data',
             args: {
@@ -16,7 +16,7 @@ frappe.ui.form.on('Employee', {
             callback: (r) => {
                 if (r.message) {
                     let data = r.message;
-                    console.log(data);
+                    frm.clear_table('custom_records');
                     for (let row of data) {
                         frm.add_child('custom_records', {
                             id: row.name,
@@ -26,10 +26,13 @@ frappe.ui.form.on('Employee', {
                             access_date: row.access_date,
                         });
                     }
-
+    
                     frm.refresh_field('custom_records');
+    
+                    frm.get_field('custom_records').grid.wrapper.closest('.section-body').slideDown();
                 }
             }
         });
     }
+    
 });

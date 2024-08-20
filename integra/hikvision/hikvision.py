@@ -10,9 +10,11 @@ def fetch_data():
     password = settings.get("password")
     database = settings.get("database")
     table = settings.get("table")
+    odbc_version = settings.get("odbc_version")
 
     conn_str = (
-        'DRIVER={ODBC Driver 17 for SQL Server};'
+        # 'DRIVER={ODBC Driver 17 for SQL Server};'
+        f'DRIVER={odbc_version};'
         f'SERVER={host};'
         f'DATABASE={database};'
         f'UID={user};'

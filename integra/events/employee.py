@@ -1,19 +1,29 @@
 import frappe
 
 def change_name(doc, method):
-    first_name = doc.get('first_name', '').strip()
-    middle_name = doc.get('middle_name', '').strip()
-    last_name = doc.get('last_name', '').strip()
-    segundo_apellido = doc.get('custom_segundo_apellido', '').strip()
-    apellido_de_casada = doc.get('custom_apellido_de_casada', '').strip()
+    def safe_get(doc, key):
+        value = doc.get(key, '')
+        return value.strip() if value else ''
+    
+    first_name = safe_get(doc, 'first_name')
+    middle_name = safe_get(doc, 'middle_name')
+    last_name = safe_get(doc, 'last_name')
+    segundo_apellido = safe_get(doc, 'custom_segundo_apellido')
+    apellido_de_casada = safe_get(doc, 'custom_apellido_de_casada')
 
-    name_parts = [first_name]
+    name_parts = []
+    if first_name:
+        name_parts.append(first_name)
     if middle_name:
         name_parts.append(middle_name)
-    name_parts.append(last_name)
+    if last_name:
+        name_parts.append(last_name)
     if segundo_apellido:
         name_parts.append(segundo_apellido)
+
     employee_name = ' '.join(name_parts)
+
     if apellido_de_casada:
         employee_name += f" DE {apellido_de_casada}"
+
     doc.employee_name = employee_name

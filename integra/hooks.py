@@ -132,10 +132,16 @@ doc_events = {
 # ---------------
 scheduler_events = {
     "hourly": [
-        "integra.hikvision.hikvision.fetch_hik_vision_records"
-        # "integra.hikvision.checkin.fetch_hik_vision_records"
-    ]
+        "integra.hikvision.checkin.fetch_hik_vision_records"
+    ],
+    # "cron": {
+    #     "* * * * *": [
+    #         "integra.hikvision.checkin.fetch_hik_vision_records"
+    #     ],
+    # }
 }
+
+
 
 
 

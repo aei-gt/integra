@@ -11,9 +11,11 @@ def fetch_data():
     database = settings.get("database")
     table = settings.get("table")
     last_record_id = settings.get("last_hik_vision_record_id")
+    odbc_version = settings.get("odbc_version")
 
     conn_str = (
-        'DRIVER={ODBC Driver 17 for SQL Server};'
+        # 'DRIVER={ODBC Driver 17 for SQL Server};'
+        f'DRIVER={odbc_version};'
         f'SERVER={host};'
         f'DATABASE={database};'
         f'UID={user};'
@@ -22,7 +24,7 @@ def fetch_data():
     connection = pyodbc.connect(conn_str)
     cursor = connection.cursor()
 
-    # Adjust the query to filter records based on AccessDateTime greater than the last_record_id
+    # Adjust the query to fetch records greater than the last_record_id
     query = f"""
         SELECT 
             ID_Global, 
@@ -31,9 +33,8 @@ def fetch_data():
             AccessTime,
             AccessDateTime
         FROM {table}
-        WHERE AccessDateTime > ?
-        GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
-        ORDER BY AccessDateTime
+        WHERE ID_Global > ?
+        ORDER BY ID_Global
     """
 
     cursor.execute(query, (last_record_id,))
@@ -46,9 +47,9 @@ def fetch_data():
     last_record = results[-1] if results else None
 
     return results, last_record
-
 @frappe.whitelist()
 def fetch_hik_vision_records():
+    print("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     records, last_record = fetch_data()
     for record in records:
         if not frappe.db.exists("Hik Vision Attendance", {"id": record['ID_Global']}):
@@ -62,15 +63,16 @@ def fetch_hik_vision_records():
             })
             doc.insert()
             frappe.db.commit()
-    process_records()
 
     # Update the last record ID in the settings
     settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
     if last_record:
-        settings.last_hik_vision_record_id = last_record['AccessDateTime']  # Updated to use AccessDateTime
+        settings.last_hik_vision_record_id = last_record['ID_Global']
         settings.save()
         frappe.db.commit()
     print("Last fetched record ID:", settings.last_hik_vision_record_id)
+
+    process_records()
 
 def process_records():
     records = frappe.get_all(
@@ -122,6 +124,3 @@ def create_checkin_checkout_entries(employee_id, access_datetime, log_type):
     doc.insert()
     frappe.db.commit()
 
-@frappe.whitelist()
-def delete_records():
-    frappe.db.delete("Hik Vision Attendance")

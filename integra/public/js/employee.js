@@ -7,17 +7,17 @@ frappe.ui.form.on('Employee', {
         });
     },
 
-    custom_hik_vision_id: function(frm) {
+    attendance_device_id: function(frm) {
         frm.clear_table('custom_records');
         frappe.call({
             method: 'integra.events.hik_vision.get_data',
             args: {
-                name: frm.doc.custom_hik_vision_id,
+                name: frm.doc.attendance_device_id,
             },
             callback: (r) => {
                 if (r.message) {
                     let data = r.message;
-                    console.log(data);
+                    // console.log(data);
                     for (let row of data) {
                         frm.add_child('custom_records', {
                             id: row.name,

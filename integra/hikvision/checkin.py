@@ -24,7 +24,6 @@ def fetch_data():
     connection = pyodbc.connect(conn_str)
     cursor = connection.cursor()
 
-    # Adjust the query to fetch records greater than the last_record_id
     query = f"""
         SELECT 
             ID_Global, 
@@ -49,7 +48,7 @@ def fetch_data():
     return results, last_record
 @frappe.whitelist()
 def fetch_hik_vision_records():
-    print("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+    # print("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     records, last_record = fetch_data()
     for record in records:
         if not frappe.db.exists("Hik Vision Attendance", {"id": record['ID_Global']}):

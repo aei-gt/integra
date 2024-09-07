@@ -10,13 +10,13 @@
  "is_standard": "Yes",
  "json": "{}",
  "letterhead": null,
- "modified": "2024-08-28 00:03:11.927105",
+ "modified": "2024-09-06 13:26:48.859770",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "Data of Employee Cronos",
  "owner": "Administrator",
  "prepared_report": 0,
- "ref_doctype": "Employee",
+ "ref_doctype": "Access Log",
  "report_name": "Data of Employee Cronos",
  "report_type": "Script Report",
  "roles": [
@@ -29,5 +29,6 @@
   {
    "role": "HR User"
   }
- ]
+ ],
+ "timeout": 0
 }

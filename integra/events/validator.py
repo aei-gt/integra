@@ -4,7 +4,13 @@ import frappe
 def validator(doc,method=None):
     nit = nit_validator(doc.custom_nit)
     dpi = dpi_validator(doc.custom_cui)
-    frappe.msgprint(f"NIT Validator Result={nit} \n DPI Validator Result={dpi}")
+    if not nit:
+        frappe.msgprint(f"NIT value is not in the correct format. Please provide the value in this format: 'xxxxxxxx-x'")
+    if not dpi:
+        frappe.msgprint(f"CUI/DPI value is not in the correct format. Please provide the value in this format: 'xxxxxxxxxxxxx'")
+
+
+      
     change_name(doc,method=None)
 
 

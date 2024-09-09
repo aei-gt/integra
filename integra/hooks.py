@@ -126,8 +126,8 @@ doctype_js = {"Salary Structure Assignment" : "public/js/salary_structure_assign
 
 doc_events = {
 	"Employee": {
-		"validate": "integra.events.employee.change_name",
-	}
+		"validate": "integra.events.validator.validator",
+    }
 }
 
 # Scheduled Tasks

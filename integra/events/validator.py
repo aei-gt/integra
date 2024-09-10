@@ -2,12 +2,14 @@
 import frappe
 @frappe.whitelist()
 def validator(doc,method=None):
-    nit = nit_validator(doc.custom_nit)
-    dpi = dpi_validator(doc.custom_cui)
-    if not nit:
-        frappe.msgprint(f"NIT value is not in the correct format. Please provide the value in this format: 'xxxxxxxx-x'")
-    if not dpi:
-        frappe.msgprint(f"CUI/DPI value is not in the correct format. Please provide the value in this format: 'xxxxxxxxxxxxx'")
+    if doc.custom_nit:
+        nit = nit_validator(doc.custom_nit)
+        if not nit:
+            frappe.msgprint(f"NIT value is not in the correct format. Please provide the value in this format: 'xxxxxxxx-x'")
+    if doc.custom_cui:
+        dpi = dpi_validator(doc.custom_cui)
+        if not dpi:
+            frappe.msgprint(f"CUI/DPI value is not in the correct format. Please provide the value in this format: 'xxxxxxxxxxxxx'")
 
 
       

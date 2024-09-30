@@ -1,7 +1,6 @@
-import frappe
 import pyodbc
+import frappe
 from datetime import datetime, timedelta
-
 def fetch_data():
     settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
 
@@ -13,42 +12,48 @@ def fetch_data():
     odbc_version = settings.get("odbc_version")
 
     conn_str = (
-        # 'DRIVER={ODBC Driver 17 for SQL Server};'
         f'DRIVER={odbc_version};'
         f'SERVER={host};'
         f'DATABASE={database};'
         f'UID={user};'
-        f'PWD={password}'
+        f'PWD={password};'
+        'TrustServerCertificate=yes;'
+        'timeout=30;'
     )
-    connection = pyodbc.connect(conn_str)
-    cursor = connection.cursor()
 
-    query = f"""
-        SELECT 
-            ID_Global, 
-            EmployeeID,
-            AccessDate,
-            AccessTime,
-            AccessDateTime
-        FROM {table}
-        GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
-        ORDER BY AccessDateTime
-    """
+    try:
+        connection = pyodbc.connect(conn_str)
+        cursor = connection.cursor()
+        query = f"""
+            SELECT 
+                ID_Global, 
+                EmployeeID,
+                AccessDate,
+                AccessTime,
+                AccessDateTime
+            FROM {table}
+            GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
+            ORDER BY AccessDateTime
+        """
 
-    cursor.execute(query)
-    columns = [column[0] for column in cursor.description]
-    results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        cursor.execute(query)
+        columns = [column[0] for column in cursor.description]
+        results = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
-    cursor.close()
-    connection.close()
+        cursor.close()
+        connection.close()
 
-    last_record = results[-1] if results else None
+        last_record = results[-1] if results else None
+        return results, last_record
 
-    return results, last_record
+    except pyodbc.Error as e:
+        frappe.throw(f"Database connection failed: {e}")
 
 @frappe.whitelist()
 def fetch_hik_vision_records():
     records, last_record = fetch_data()
+
+    # frappe.msgprint(f"{records}")
     for record in records:
         if not frappe.db.exists("Hik Vision Attendance", {"id": record['ID_Global']}):
             doc = frappe.get_doc({
@@ -63,7 +68,6 @@ def fetch_hik_vision_records():
             frappe.db.commit()
     process_records()
 
-    # Update the last record ID in the settings
     settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
     if last_record:
         settings.last_hik_vision_record_id = last_record['ID_Global']

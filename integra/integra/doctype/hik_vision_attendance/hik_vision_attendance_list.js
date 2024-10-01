@@ -11,17 +11,17 @@ frappe.listview_settings['Hik Vision Attendance'] = {
                 }
             });
         });
-        // listview.page.add_button(__('Fetch Hik Vision create_attendance'), function () {
-        //     frappe.call({
-        //         method: 'integra.hikvision.hikvision.create_attendance',
-        //         callback: function (response) {
-        //             if (response) {
-        //                 frappe.show_alert(__('Records have been fetched and processed.'));
-        //                 listview.refresh();
-        //             }
-        //         }
-        //     });
-        // });
+        listview.page.add_button(__('Fetch Hik Vision create_attendance'), function () {
+            frappe.call({
+                method: 'integra.hikvision.hikvision.create_attendance',
+                callback: function (response) {
+                    if (response) {
+                        frappe.show_alert(__('Records have been fetched and processed.'));
+                        listview.refresh();
+                    }
+                }
+            });
+        });
 
         listview.page.add_button(__('Delete Records'), function () {
             frappe.call({
@@ -34,17 +34,17 @@ frappe.listview_settings['Hik Vision Attendance'] = {
                 }
             });
         });
-        // listview.page.add_button(__('Delete Records checkin'), function () {
-        //     frappe.call({
-        //         method: 'integra.hikvision.hikvision.delete_records_checkin',
-        //         callback: function (response) {
-        //             if (response) {
-        //                 frappe.show_alert(__('Records have been Deleted.'));
-        //                 listview.refresh();
-        //             }
-        //         }
-        //     });
-        // });
+        listview.page.add_button(__('Delete Records checkin'), function () {
+            frappe.call({
+                method: 'integra.hikvision.hikvision.delete_records_checkin',
+                callback: function (response) {
+                    if (response) {
+                        frappe.show_alert(__('Records have been Deleted.'));
+                        listview.refresh();
+                    }
+                }
+            });
+        });
         
         // listview.page.add_button(__('Fetch Last Records'), function () {
         //     frappe.call({

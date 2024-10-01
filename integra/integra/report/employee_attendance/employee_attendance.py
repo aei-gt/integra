@@ -10,7 +10,7 @@ def execute(filters=None):
 
 def get_columns():
     return [
-        {"fieldname": "employee", "label": "Employee", "fieldtype": "Link", "options": "Employee", "width": 300},
+        {"fieldname": "employee", "label": "Employee", "fieldtype": "Link", "options": "Employee", "width": 150},
         {"fieldname": "full_name", "label": "Employee Name", "fieldtype": "Data", "width": 300},
         {"fieldname": "employee_id", "label": "Hik Vision ID", "fieldtype": "Data", "width": 200},
         {"fieldname": "date", "label": "Date", "fieldtype": "Date", "width": 200},

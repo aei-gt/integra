@@ -5,7 +5,6 @@ from frappe.utils import get_datetime
 
 def fetch_data():
     settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
-
     host = settings.get("host")
     user = settings.get("user")
     password = settings.get("password")
@@ -45,7 +44,11 @@ def fetch_data():
         cursor.close()
         connection.close()
 
-        last_record = results[-1] if results else None
+        if not results:
+            frappe.log_error("No records found in HikVision database.", "Fetch Data Error")
+            return [], None  # Handle no results gracefully
+
+        last_record = results[-1]
         return results, last_record
 
     except pyodbc.Error as e:
@@ -54,6 +57,8 @@ def fetch_data():
 @frappe.whitelist()
 def fetch_hik_vision_records():
     records, last_record = fetch_data()
+    if not records:
+        return
 
     for record in records:
         if not frappe.db.exists("Hik Vision Attendance", {"id": record['ID_Global']}):
@@ -126,7 +131,8 @@ def create_checkin_checkout_entries(employee_id, access_datetime, log_type):
         employee_id = employee_record[0].name
         employee_doc = frappe.get_doc("Employee", employee_id)
     else:
-        employee_doc = None
+        frappe.log_warning(f"No employee found for ID: {employee_id}", "Checkin Entry Warning")
+        return  # Exit if no employee found
 
     if employee_doc:
         doc.employee = employee_doc.name
@@ -178,6 +184,7 @@ def create_attendance():
             doc.status = status
             doc.save()
             doc.submit()
+            created_count += 1  # Increment the created count
 
         frappe.db.commit()
         return frappe.msgprint(f"Successfully created {created_count} attendance records")
@@ -188,7 +195,6 @@ def create_attendance():
     except Exception as e:
         frappe.log_error(f"An error occurred: {str(e)}", "Error in create_attendance")
         return frappe.msgprint("An unexpected error occurred. Please try again later.")
-
 
 @frappe.whitelist()
 def delete_records():

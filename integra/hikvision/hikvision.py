@@ -3,6 +3,8 @@ import frappe
 from datetime import datetime, timedelta
 from frappe.utils import get_datetime
 
+
+# Fetch data from the HikVision database
 def fetch_data():
     settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
 
@@ -51,6 +53,8 @@ def fetch_data():
     except pyodbc.Error as e:
         frappe.throw(f"Database connection failed: {e}")
 
+
+# Fetch HikVision records and insert into Frappe
 @frappe.whitelist()
 def fetch_hik_vision_records():
     records, last_record = fetch_data()
@@ -76,6 +80,8 @@ def fetch_hik_vision_records():
         settings.save()
         frappe.db.commit()
 
+
+# Process HikVision records and create checkin/checkout entries
 def process_records():
     records = frappe.get_all(
         "Hik Vision Attendance",
@@ -111,6 +117,8 @@ def process_records():
         for group in record_groups:
             process_record_group(employee_id, group)
 
+
+# Process each group of records for an employee
 def process_record_group(employee_id, record_group):
     records = record_group['records']
     if records:
@@ -118,24 +126,26 @@ def process_record_group(employee_id, record_group):
         create_checkin_checkout_entries(employee_id, records[-1], "OUT")
         create_attendance()
 
+
+# Create check-in and check-out entries for employees
 def create_checkin_checkout_entries(employee_id, access_datetime, log_type):
-    doc = frappe.new_doc("Employee Checkin")
     employee_record = frappe.get_all("Employee", filters={"attendance_device_id": employee_id}, fields=["name"])
     
     if employee_record:
         employee_id = employee_record[0].name
-        employee_doc = frappe.get_doc("Employee", employee_id)
-    else:
-        employee_doc = None
-
-    if employee_doc:
-        doc.employee = employee_doc.name
+        doc = frappe.new_doc("Employee Checkin")
+        doc.employee = employee_id
         doc.time = access_datetime.strftime('%Y-%m-%d %H:%M:%S')
         doc.device_id = access_datetime
         doc.log_type = log_type
         doc.insert()
         frappe.db.commit()
 
+        # Debugging message
+        frappe.msgprint(f"Created Checkin/Checkout for {employee_id} at {access_datetime} with log type {log_type}")
+
+
+# Create attendance records based on check-in and check-out data
 @frappe.whitelist()
 def create_attendance():
     try:
@@ -163,21 +173,34 @@ def create_attendance():
         for record in attendance_records:
             entry_time = record.get('entry')
             exit_time = record.get('exit_time')
+            
+            # Check if times are valid
+            if not entry_time or not exit_time:
+                frappe.msgprint(f"Skipping record for {record['employee']} on {record['date']} due to missing times")
+                continue
+
             time_diff = get_datetime(exit_time) - get_datetime(entry_time)
             hours_worked = time_diff.total_seconds() / 3600.0
 
+            # Determine status based on hours worked
             if hours_worked >= 8:
                 status = "Present"
             elif hours_worked >= 4:
                 status = "Half Day"
             else:
                 status = "Absent"
-            doc = frappe.new_doc("Attendance")
-            doc.employee = record.get('employee')
-            doc.attendance_date = get_datetime(record.get('date'))
-            doc.status = status
-            doc.save()
-            doc.submit()
+
+            # Check if an attendance record already exists
+            if not frappe.db.exists("Attendance", {"employee": record['employee'], "attendance_date": record['date']}):
+                doc = frappe.new_doc("Attendance")
+                doc.employee = record.get('employee')
+                doc.attendance_date = get_datetime(record.get('date'))
+                doc.status = status
+                doc.save()
+                doc.submit()
+
+                created_count += 1
+                frappe.msgprint(f"Created attendance for {record['employee']} on {record['date']} with status {status}")
 
         frappe.db.commit()
         return frappe.msgprint(f"Successfully created {created_count} attendance records")
@@ -190,10 +213,13 @@ def create_attendance():
         return frappe.msgprint("An unexpected error occurred. Please try again later.")
 
 
+# Function to delete all Hik Vision Attendance records
 @frappe.whitelist()
 def delete_records():
     frappe.db.delete("Hik Vision Attendance")
 
+
+# Function to delete all Attendance records
 @frappe.whitelist()
 def delete_records_checkin():
     frappe.db.delete("Attendance")

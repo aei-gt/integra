@@ -1,6 +1,6 @@
 import pyodbc
 import frappe
-from datetime import timedelta
+from datetime import datetime, timedelta
 from frappe.utils import get_datetime
 
 def fetch_data():
@@ -53,74 +53,63 @@ def fetch_data():
 
 @frappe.whitelist()
 def fetch_hik_vision_records():
-    try:
-        records, last_record = fetch_data()
+    records, last_record = fetch_data()
 
-        for record in records:
-            if not frappe.db.exists("Hik Vision Attendance", {"id": record['ID_Global']}):
-                doc = frappe.get_doc({
-                    "doctype": "Hik Vision Attendance",
-                    "id": record['ID_Global'],
-                    "employee_id": record['EmployeeID'],
-                    "access_date_time": record['AccessDateTime'],
-                    "access_date": record['AccessDate'],
-                    "access_time": record['AccessTime']
-                })
-                doc.insert()
-                frappe.db.commit()
-        
-        process_records()
-
-        settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
-        if last_record:
-            settings.last_hik_vision_record_id = last_record['ID_Global']
-            settings.save()
+    for record in records:
+        if not frappe.db.exists("Hik Vision Attendance", {"id": record['ID_Global']}):
+            doc = frappe.get_doc({
+                "doctype": "Hik Vision Attendance",
+                "id": record['ID_Global'],
+                "employee_id": record['EmployeeID'],
+                "access_date_time": record['AccessDateTime'],
+                "access_date": record['AccessDate'],
+                "access_time": record['AccessTime']
+            })
+            doc.insert()
             frappe.db.commit()
+    
+    process_records()
 
-    except Exception as e:
-        error_message = str(e)
-        if len(error_message) > 140:
-            error_message = error_message[:140] + "..."
-        frappe.log_error(f"An error occurred: {error_message}", "Error in fetch_hik_vision_records")
+    settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
+    if last_record:
+        settings.last_hik_vision_record_id = last_record['ID_Global']
+        settings.save()
+        frappe.db.commit()
 
 def process_records():
-    try:
-        records = frappe.get_all(
-            "Hik Vision Attendance",
-            fields=["employee_id", "access_date_time"]
-        )
-        employee_ids = set(record['employee_id'] for record in records)
-        for employee_id in employee_ids:
-            employee_records = [get_datetime(record['access_date_time']) for record in records if record['employee_id'] == employee_id]
-            employee_records.sort()
-            record_groups = []
-            if employee_records:
-                start_time = employee_records[0]
-                end_time = start_time + timedelta(hours=24)
-                current_window = []
-                for record in employee_records:
-                    if record < end_time:
-                        current_window.append(record)
-                    else:
-                        record_groups.append({
-                            'window_start': start_time,
-                            'window_end': end_time,
-                            'records': current_window
-                        })
-                        start_time = record
-                        end_time = start_time + timedelta(hours=24)
-                        current_window = [record]
-                if current_window:
+    records = frappe.get_all(
+        "Hik Vision Attendance",
+        fields=["employee_id", "access_date_time"]
+    )
+    employee_ids = set(record['employee_id'] for record in records)
+    for employee_id in employee_ids:
+        employee_records = [frappe.utils.get_datetime(record['access_date_time']) for record in records if record['employee_id'] == employee_id]
+        employee_records.sort()
+        record_groups = []
+        if employee_records:
+            start_time = employee_records[0]
+            end_time = start_time + timedelta(hours=24)
+            current_window = []
+            for record in employee_records:
+                if record < end_time:
+                    current_window.append(record)
+                else:
                     record_groups.append({
                         'window_start': start_time,
                         'window_end': end_time,
                         'records': current_window
                     })
-            for group in record_groups:
-                process_record_group(employee_id, group)
-
-    except Exception as e:
-        frappe.log_error(f"Error in processing records: {str(e)}", "process_records")
+                    start_time = record
+                    end_time = start_time + timedelta(hours=24)
+                    current_window = [record]
+            if current_window:
+                record_groups.append({
+                    'window_start': start_time,
+                    'window_end': end_time,
+                    'records': current_window
+                })
+        for group in record_groups:
+            process_record_group(employee_id, group)
 
 def process_record_group(employee_id, record_group):
     records = record_group['records']
@@ -130,26 +119,22 @@ def process_record_group(employee_id, record_group):
         create_attendance()
 
 def create_checkin_checkout_entries(employee_id, access_datetime, log_type):
-    try:
-        doc = frappe.new_doc("Employee Checkin")
-        employee_record = frappe.get_all("Employee", filters={"attendance_device_id": employee_id}, fields=["name"])
+    doc = frappe.new_doc("Employee Checkin")
+    employee_record = frappe.get_all("Employee", filters={"attendance_device_id": employee_id}, fields=["name"])
+    
+    if employee_record:
+        employee_id = employee_record[0].name
+        employee_doc = frappe.get_doc("Employee", employee_id)
+    else:
+        employee_doc = None
 
-        if employee_record:
-            employee_id = employee_record[0].name
-            employee_doc = frappe.get_doc("Employee", employee_id)
-        else:
-            employee_doc = None
-
-        if employee_doc:
-            doc.employee = employee_doc.name
-            doc.time = access_datetime.strftime('%Y-%m-%d %H:%M:%S')
-            doc.device_id = access_datetime
-            doc.log_type = log_type
-            doc.insert()
-            frappe.db.commit()
-
-    except Exception as e:
-        frappe.log_error(f"Error in creating checkin/checkout: {str(e)}", "create_checkin_checkout_entries")
+    if employee_doc:
+        doc.employee = employee_doc.name
+        doc.time = access_datetime.strftime('%Y-%m-%d %H:%M:%S')
+        doc.device_id = access_datetime
+        doc.log_type = log_type
+        doc.insert()
+        frappe.db.commit()
 
 @frappe.whitelist()
 def create_attendance():
@@ -187,7 +172,6 @@ def create_attendance():
                 status = "Half Day"
             else:
                 status = "Absent"
-
             doc = frappe.new_doc("Attendance")
             doc.employee = record.get('employee')
             doc.attendance_date = get_datetime(record.get('date'))
@@ -196,19 +180,14 @@ def create_attendance():
             doc.submit()
 
         frappe.db.commit()
-        frappe.msgprint(f"Successfully created {created_count} attendance records")
+        return frappe.msgprint(f"Successfully created {created_count} attendance records")
 
     except frappe.exceptions.QueryTimeoutError as e:
-        frappe.log_error("Lock wait timeout exceeded", "Error in create_attendance")
-        frappe.msgprint("Unable to create attendance due to a lock wait timeout. Please try again later.")
-
+        frappe.log_error(f"Lock wait timeout exceeded: {str(e)}", "Error in create_attendance")
+        return frappe.msgprint("Unable to create attendance due to a lock wait timeout. Please try again later.")
     except Exception as e:
-        error_message = str(e)
-        if len(error_message) > 140:
-            error_message = error_message[:140] + "..."
-        frappe.log_error(f"An error occurred: {error_message}", "Error in create_attendance")
-        frappe.msgprint("An unexpected error occurred. Please try again later.")
-
+        frappe.log_error(f"An error occurred: {str(e)}", "Error in create_attendance")
+        return frappe.msgprint("An unexpected error occurred. Please try again later.")
 
 
 @frappe.whitelist()

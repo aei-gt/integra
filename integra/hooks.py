@@ -136,11 +136,11 @@ scheduler_events = {
     "hourly": [
         "integra.hikvision.hikvision.fetch_hik_vision_records"
     ],
-    # "cron": {
-    #     "* * * * *": [
-    #         "integra.hikvision.hikvision.fetch_hik_vision_records"
-    #     ],
-    # }
+    "cron": {
+        "* * * * *": [
+            "integra.hikvision.hikvision.fetch_hik_vision_records"
+        ],
+    }
 }
 
 

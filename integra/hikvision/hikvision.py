@@ -73,9 +73,65 @@ def fetch_hik_vision_records():
             })
             doc.insert()
             frappe.db.commit()
-    # process_records()
-    enqueue_create_attendance(),
-    create_attendance()
+
+    enqueue_create_attendance()
+
+@frappe.whitelist()
+def create_attendance():
+    attendance_records = frappe.get_all('Hik Vision Attendance',
+        fields=['employee_id', 'access_date', 'MIN(access_time) as entry', 'MAX(access_time) as exit_time'],
+        group_by='employee_id, access_date',
+        order_by='employee_id, access_date')
+
+    result = []
+    for record in attendance_records:
+        employee_details = frappe.get_value('Employee', {'attendance_device_id': record['employee_id']}, ['name', 'employee_name'], as_dict=True)
+        
+        if employee_details:
+            result.append({
+                'employee': employee_details['name'],
+                'full_name': employee_details['employee_name'],
+                'employee_id': record['employee_id'],
+                'date': record['access_date'],
+                'entry': record['entry'],
+                'exit_time': record['exit_time']
+            })
+
+    for record in result:
+        entry_time = record.get('entry')
+        exit_time = record.get('exit_time')
+
+        time_diff = get_datetime(exit_time) - get_datetime(entry_time)
+        hours_worked = time_diff.total_seconds() / 3600.0
+        
+        if hours_worked >= 8:
+            status = "Present"
+        elif hours_worked >= 4:
+            status = "Half Day"
+        else:
+            status = "Absent"
+
+        if not frappe.db.exists('Attendance', {'employee': record['employee'], 'attendance_date': record['date']}):
+            doc = frappe.new_doc("Attendance")
+            doc.employee = record.get('employee')
+            doc.attendance_date = get_datetime(record.get('date'))
+            doc.status = status
+            doc.submit()
+
+    frappe.db.commit()
+@frappe.whitelist()
+def enqueue_create_attendance():
+    enqueue(
+        create_attendance,
+        queue="default",
+        timeout=600000,
+        now=frappe.conf.developer_mode or frappe.flags.in_test,
+    )
+
+
+
+
+    # create_attendance()
 
     # settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
     # if last_record:
@@ -141,55 +197,7 @@ def fetch_hik_vision_records():
     # doc.log_type = log_type
     # doc.insert()
     # frappe.db.commit()
-BATCH_SIZE = 50 
-@frappe.whitelist()
-def create_attendance():
-    attendance_records = frappe.get_all('Hik Vision Attendance',
-     fields=['employee_id', 'access_date', 'MIN(access_time) as entry', 'MAX(access_time) as exit_time'],
-        group_by='employee_id, access_date',
-        order_by='employee_id, access_date')
-    
-    result = []
-    for record in attendance_records:
-        employee_details = frappe.get_value('Employee', {'attendance_device_id': record['employee_id']}, ['name', 'employee_name'], as_dict=True)
-        
-        if employee_details:
-            result.append({
-                'employee': employee_details['name'],
-                'full_name': employee_details['employee_name'],
-                'employee_id': record['employee_id'],
-                'date': record['access_date'],
-                'entry': record['entry'],
-                'exit_time': record['exit_time']
-            })
 
-    for record in result:
-        entry_time = record.get('entry')
-        exit_time = record.get('exit_time')
-
-        time_diff = get_datetime(exit_time) - get_datetime(entry_time)
-        hours_worked = time_diff.total_seconds() / 3600.0
-        if hours_worked >= 8:
-            status = "Present"
-        elif hours_worked >= 4:
-            status = "Half Day"
-        else:
-            status = "Absent"
-        doc = frappe.new_doc("Attendance")
-        doc.employee = record.get('employee')
-        doc.attendance_date = get_datetime(record.get('date'))
-        doc.status = status
-        doc.save()
-        doc.submit()
-    frappe.db.commit()
-@frappe.whitelist()
-def enqueue_create_attendance():
-    enqueue(
-        create_attendance,
-        queue="default",
-        timeout=600000,
-        now=frappe.conf.developer_mode or frappe.flags.in_test,
-    )
 
 @frappe.whitelist()
 def delete_records():

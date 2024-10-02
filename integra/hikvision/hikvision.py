@@ -2,6 +2,7 @@ import pyodbc
 import frappe
 from datetime import datetime, timedelta
 from frappe.utils import get_datetime
+from frappe.utils.background_jobs import enqueue
 
 def fetch_data():
     settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
@@ -46,7 +47,7 @@ def fetch_data():
 
         if not results:
             frappe.log_error("No records found in HikVision database.", "Fetch Data Error")
-            return [], None  # Handle no results gracefully
+            return [], None
 
         last_record = results[-1]
         return results, last_record
@@ -72,83 +73,82 @@ def fetch_hik_vision_records():
             })
             doc.insert()
             frappe.db.commit()
+    # process_records()
+    enqueue_create_attendance(),
+    create_attendance()
+
+    # settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
+    # if last_record:
+    #     settings.last_hik_vision_record_id = last_record['ID_Global']
+    #     settings.save()
+        # frappe.db.commit()
+# def process_records():
+#     records = frappe.get_all(
+#         "Hik Vision Attendance",
+#         fields=["employee_id", "access_date_time"]
+#     )
+#     employee_ids = set(record['employee_id'] for record in records)
+#     for employee_id in employee_ids:
+#         employee_records = [frappe.utils.get_datetime(record['access_date_time']) for record in records if record['employee_id'] == employee_id]
+#         employee_records.sort()
+#         record_groups = []
+#         if employee_records:
+#             start_time = employee_records[0]
+#             end_time = start_time + timedelta(hours=24)
+#             current_window = []
+#             for record in employee_records:
+#                 if record < end_time:
+#                     current_window.append(record)
+#                 else:
+#                     record_groups.append({
+#                         'window_start': start_time,
+#                         'window_end': end_time,
+#                         'records': current_window
+#                     })
+#                     start_time = record
+#                     end_time = start_time + timedelta(hours=24)
+#                     current_window = [record]
+#             if current_window:
+#                 record_groups.append({
+#                     'window_start': start_time,
+#                     'window_end': end_time,
+#                     'records': current_window
+#                 })
+#         for group in record_groups:
+#             process_record_group(employee_id, group)
+
+# def process_record_group(employee_id, record_group):
+#     records = record_group['records']
+#     if records:
+#         create_checkin_checkout_entries(employee_id, records[0], "IN")
+#         create_checkin_checkout_entries(employee_id, records[-1], "OUT")
+#         enqueue_create_attendance()
+
+# def create_checkin_checkout_entries(employee_id, access_datetime, log_type):
+#     doc = frappe.new_doc("Employee Checkin")
+    # employee_record = frappe.get_all("Employee", filters={"attendance_device_id": employee_id}, fields=["name"])
     
-    process_records()
-
-    settings = frappe.get_doc("HikVision Settings", "HikVision Settings")
-    if last_record:
-        settings.last_hik_vision_record_id = last_record['ID_Global']
-        settings.save()
-        frappe.db.commit()
-
-def process_records():
-    records = frappe.get_all(
-        "Hik Vision Attendance",
-        fields=["employee_id", "access_date_time"]
-    )
-    employee_ids = set(record['employee_id'] for record in records)
-    for employee_id in employee_ids:
-        employee_records = [frappe.utils.get_datetime(record['access_date_time']) for record in records if record['employee_id'] == employee_id]
-        employee_records.sort()
-        record_groups = []
-        if employee_records:
-            start_time = employee_records[0]
-            end_time = start_time + timedelta(hours=24)
-            current_window = []
-            for record in employee_records:
-                if record < end_time:
-                    current_window.append(record)
-                else:
-                    record_groups.append({
-                        'window_start': start_time,
-                        'window_end': end_time,
-                        'records': current_window
-                    })
-                    start_time = record
-                    end_time = start_time + timedelta(hours=24)
-                    current_window = [record]
-            if current_window:
-                record_groups.append({
-                    'window_start': start_time,
-                    'window_end': end_time,
-                    'records': current_window
-                })
-        for group in record_groups:
-            process_record_group(employee_id, group)
-
-def process_record_group(employee_id, record_group):
-    records = record_group['records']
-    if records:
-        create_checkin_checkout_entries(employee_id, records[0], "IN")
-        create_checkin_checkout_entries(employee_id, records[-1], "OUT")
-        create_attendance()
-
-def create_checkin_checkout_entries(employee_id, access_datetime, log_type):
-    doc = frappe.new_doc("Employee Checkin")
-    employee_record = frappe.get_all("Employee", filters={"attendance_device_id": employee_id}, fields=["name"])
-    
-    if employee_record:
-        employee_id = employee_record[0].name
-        employee_doc = frappe.get_doc("Employee", employee_id)
-    else:
-        frappe.log_warning(f"No employee found for ID: {employee_id}", "Checkin Entry Warning")
-        return  # Exit if no employee found
-
-    if employee_doc:
-        doc.employee = employee_doc.name
-        doc.time = access_datetime.strftime('%Y-%m-%d %H:%M:%S')
-        doc.device_id = access_datetime
-        doc.log_type = log_type
-        doc.insert()
-        frappe.db.commit()
-
+    # if employee_record:
+    #     employee_id = employee_record[0].name
+    #     employee_doc = frappe.get_doc("Employee", employee_id)
+    # else:
+    #     frappe.log_warning(f"No employee found for ID: {employee_id}", "Checkin Entry Warning")
+    #     return
+        # if employee_doc:
+    # doc.employee = employee_id
+    # doc.time = access_datetime.strftime('%Y-%m-%d %H:%M:%S')
+    # doc.device_id = access_datetime
+    # doc.log_type = log_type
+    # doc.insert()
+    # frappe.db.commit()
+BATCH_SIZE = 50 
 @frappe.whitelist()
 def create_attendance():
     attendance_records = frappe.get_all('Hik Vision Attendance',
      fields=['employee_id', 'access_date', 'MIN(access_time) as entry', 'MAX(access_time) as exit_time'],
         group_by='employee_id, access_date',
         order_by='employee_id, access_date')
-    # frappe.msgprint(f"{attendance_records}")
+    
     result = []
     for record in attendance_records:
         employee_details = frappe.get_value('Employee', {'attendance_device_id': record['employee_id']}, ['name', 'employee_name'], as_dict=True)
@@ -163,13 +163,9 @@ def create_attendance():
                 'exit_time': record['exit_time']
             })
 
-    # frappe.msgprint(f"{result}")
     for record in result:
         entry_time = record.get('entry')
         exit_time = record.get('exit_time')
-
-        if not entry_time or not exit_time:
-            continue
 
         time_diff = get_datetime(exit_time) - get_datetime(entry_time)
         hours_worked = time_diff.total_seconds() / 3600.0
@@ -186,6 +182,14 @@ def create_attendance():
         doc.save()
         doc.submit()
     frappe.db.commit()
+@frappe.whitelist()
+def enqueue_create_attendance():
+    enqueue(
+        create_attendance,
+        queue="default",
+        timeout=600000,
+        now=frappe.conf.developer_mode or frappe.flags.in_test,
+    )
 
 @frappe.whitelist()
 def delete_records():

@@ -137,8 +137,8 @@ scheduler_events = {
         "integra.hikvision.hikvision.fetch_hik_vision_records"
     ],
     "cron": {
-        "* * * * *": [
-            "integra.hikvision.hikvision.fetch_hik_vision_records"
+        "*/10 * * * *": [
+            "integra.hikvision.hikvision.create_attendance"
         ],
     }
 }

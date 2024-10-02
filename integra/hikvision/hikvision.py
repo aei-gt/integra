@@ -144,57 +144,48 @@ def create_checkin_checkout_entries(employee_id, access_datetime, log_type):
 
 @frappe.whitelist()
 def create_attendance():
-    try:
-        attendance_records = frappe.db.sql("""
-            SELECT
-                e.name as employee,
-                e.employee_name as full_name,
-                h.employee_id,
-                h.access_date as date,
-                MIN(h.access_time) as entry,
-                MAX(h.access_time) as exit_time
-            FROM
-                `tabHik Vision Attendance` h
-            JOIN
-                `tabEmployee` e
-            ON
-                h.employee_id = e.attendance_device_id
-            GROUP BY
-                h.employee_id, h.access_date
-            ORDER BY
-                h.employee_id, h.access_date
-        """, as_dict=True)
+    attendance_records = frappe.get_all('Hik Vision Attendance',
+     fields=['employee_id', 'access_date', 'MIN(access_time) as entry', 'MAX(access_time) as exit_time'],
+        group_by='employee_id, access_date',
+        order_by='employee_id, access_date')
+    # frappe.msgprint(f"{attendance_records}")
+    result = []
+    for record in attendance_records:
+        employee_details = frappe.get_value('Employee', {'attendance_device_id': record['employee_id']}, ['name', 'employee_name'], as_dict=True)
+        
+        if employee_details:
+            result.append({
+                'employee': employee_details['name'],
+                'full_name': employee_details['employee_name'],
+                'employee_id': record['employee_id'],
+                'date': record['access_date'],
+                'entry': record['entry'],
+                'exit_time': record['exit_time']
+            })
 
-        created_count = 0
-        for record in attendance_records:
-            entry_time = record.get('entry')
-            exit_time = record.get('exit_time')
-            time_diff = get_datetime(exit_time) - get_datetime(entry_time)
-            hours_worked = time_diff.total_seconds() / 3600.0
+    # frappe.msgprint(f"{result}")
+    for record in result:
+        entry_time = record.get('entry')
+        exit_time = record.get('exit_time')
 
-            if hours_worked >= 7:
-                status = "Present"
-            elif hours_worked >= 4:
-                status = "Half Day"
-            else:
-                status = "Absent"
-            doc = frappe.new_doc("Attendance")
-            doc.employee = record.get('employee')
-            doc.attendance_date = get_datetime(record.get('date'))
-            doc.status = status
-            doc.save()
-            doc.submit()
-            created_count += 1  # Increment the created count
+        if not entry_time or not exit_time:
+            continue
 
-        frappe.db.commit()
-        return frappe.msgprint(f"Successfully created {created_count} attendance records")
-
-    except frappe.exceptions.QueryTimeoutError as e:
-        frappe.log_error(f"Lock wait timeout exceeded: {str(e)}", "Error in create_attendance")
-        return frappe.msgprint("Unable to create attendance due to a lock wait timeout. Please try again later.")
-    except Exception as e:
-        frappe.log_error(f"An error occurred: {str(e)}", "Error in create_attendance")
-        return frappe.msgprint("An unexpected error occurred. Please try again later.")
+        time_diff = get_datetime(exit_time) - get_datetime(entry_time)
+        hours_worked = time_diff.total_seconds() / 3600.0
+        if hours_worked >= 8:
+            status = "Present"
+        elif hours_worked >= 4:
+            status = "Half Day"
+        else:
+            status = "Absent"
+        doc = frappe.new_doc("Attendance")
+        doc.employee = record.get('employee')
+        doc.attendance_date = get_datetime(record.get('date'))
+        doc.status = status
+        doc.save()
+        doc.submit()
+    frappe.db.commit()
 
 @frappe.whitelist()
 def delete_records():
@@ -203,3 +194,4 @@ def delete_records():
 @frappe.whitelist()
 def delete_records_checkin():
     frappe.db.delete("Attendance")
+    frappe.db.delete("Employee Checkin")

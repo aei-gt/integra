@@ -26,8 +26,19 @@ def fetch_data():
     try:
         connection = pyodbc.connect(conn_str)
         cursor = connection.cursor()
+        # query = f"""
+        #     SELECT TOP 10
+        #         ID_Global, 
+        #         EmployeeID,
+        #         AccessDate,
+        #         AccessTime,
+        #         AccessDateTime
+        #     FROM {table}
+        #     GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
+        #     ORDER BY AccessDateTime
+        # """
         query = f"""
-            SELECT TOP 10
+            SELECT 
                 ID_Global, 
                 EmployeeID,
                 AccessDate,

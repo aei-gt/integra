@@ -20,25 +20,14 @@ def fetch_data():
         f'UID={user};'
         f'PWD={password};'
         'TrustServerCertificate=yes;'
-        'timeout=1000;'
+        'timeout=3000;'
     )
 
     try:
         connection = pyodbc.connect(conn_str)
         cursor = connection.cursor()
-        # query = f"""
-        #     SELECT TOP 10
-        #         ID_Global, 
-        #         EmployeeID,
-        #         AccessDate,
-        #         AccessTime,
-        #         AccessDateTime
-        #     FROM {table}
-        #     GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
-        #     ORDER BY AccessDateTime
-        # """
         query = f"""
-            SELECT 
+            SELECT TOP 1000
                 ID_Global, 
                 EmployeeID,
                 AccessDate,
@@ -48,6 +37,17 @@ def fetch_data():
             GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
             ORDER BY AccessDateTime
         """
+        # query = f"""
+        #     SELECT 
+        #         ID_Global, 
+        #         EmployeeID,
+        #         AccessDate,
+        #         AccessTime,
+        #         AccessDateTime
+        #     FROM {table}
+        #     GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
+        #     ORDER BY AccessDateTime
+        # """
 
         cursor.execute(query)
         columns = [column[0] for column in cursor.description]

@@ -20,14 +20,14 @@ def fetch_data():
         f'UID={user};'
         f'PWD={password};'
         'TrustServerCertificate=yes;'
-        'timeout=30;'
+        'timeout=1000;'
     )
 
     try:
         connection = pyodbc.connect(conn_str)
         cursor = connection.cursor()
         query = f"""
-            SELECT 
+            SELECT TOP 10
                 ID_Global, 
                 EmployeeID,
                 AccessDate,
@@ -123,8 +123,7 @@ def create_attendance():
 def enqueue_create_attendance():
     enqueue(
         create_attendance,
-        queue="default",
-        timeout=600000,
+        queue="long",
         now=frappe.conf.developer_mode or frappe.flags.in_test,
     )
 

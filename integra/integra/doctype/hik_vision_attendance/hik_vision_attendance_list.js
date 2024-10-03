@@ -11,17 +11,17 @@ frappe.listview_settings['Hik Vision Attendance'] = {
                 }
             });
         });
-        // listview.page.add_button(__('Fetch Hik Vision create_attendance'), function () {
-        //     frappe.call({
-        //         method: 'integra.hikvision.hikvision.create_attendance',
-        //         callback: function (response) {
-        //             if (response) {
-        //                 frappe.show_alert(__('Records have been fetched and processed.'));
-        //                 listview.refresh();
-        //             }
-        //         }
-        //     });
-        // });
+        listview.page.add_button(__('Employee'), function () {
+            frappe.call({
+                method: 'integra.hikvision.hikvision.mark_absent_employees',
+                callback: function (response) {
+                    if (response) {
+                        frappe.show_alert(__('Records have been fetched and processed.'));
+                        listview.refresh();
+                    }
+                }
+            });
+        });
 
         listview.page.add_button(__('Delete Records'), function () {
             frappe.call({

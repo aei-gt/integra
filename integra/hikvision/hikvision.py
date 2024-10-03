@@ -29,7 +29,6 @@ def fetch_data():
     try:
         connection = pyodbc.connect(conn_str)
         cursor = connection.cursor()
-<<<<<<< Updated upstream
         # query = f"""
         #     SELECT TOP 10
         #         ID_Global, 
@@ -41,10 +40,6 @@ def fetch_data():
         #     GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
         #     ORDER BY AccessDateTime
         # """
-=======
-        frappe.log("Database connection established.")
-        
->>>>>>> Stashed changes
         query = f"""
             SELECT 
                 ID_Global, 
@@ -53,11 +48,7 @@ def fetch_data():
                 AccessTime,
                 AccessDateTime
             FROM {table}
-<<<<<<< Updated upstream
             GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
-=======
-            WHERE ID_Global > {last_id}  -- Only fetch records with ID greater than the last one
->>>>>>> Stashed changes
             ORDER BY AccessDateTime
         """
 

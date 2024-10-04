@@ -59,3 +59,6 @@ frappe.listview_settings['Hik Vision Attendance'] = {
         // });
     }
 };
+
+
+

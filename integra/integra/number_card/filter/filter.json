@@ -1,0 +1,22 @@
+{
+ "creation": "2024-10-04 09:45:55.088706",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "filters_config": "\n[{\n\t\"fieldname\": \"date\",\n\t\"label\":\"Date\",\n\t\"fieldtype\": \"date\",\n\t\"reqd\": 1\n}]",
+ "filters_json": "{}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "filter",
+ "method": "integra.hikvision.hikvision.testfunction",
+ "modified": "2024-10-04 09:45:55.088706",
+ "modified_by": "Administrator",
+ "module": "INTEGRA",
+ "name": "filter",
+ "owner": "Administrator",
+ "report_function": "Sum",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Custom"
+}

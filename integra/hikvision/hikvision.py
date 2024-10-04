@@ -220,6 +220,12 @@ def delete_records():
     frappe.db.delete("Hik Vision Attendance")
 
 @frappe.whitelist()
+def testfunction(filters):
+    
+
+    return filters
+
+@frappe.whitelist()
 def delete_records_checkin():
     frappe.db.delete("Attendance")
     frappe.db.delete("Employee Checkin")

@@ -12,4 +12,4 @@ for(let row of modules){
     
         }
     });
-    }
+}

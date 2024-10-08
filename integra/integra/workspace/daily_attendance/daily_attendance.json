@@ -1,0 +1,63 @@
+{
+ "charts": [
+  {
+   "chart_name": "Shift Assignment Breakup (Daily)",
+   "label": "Shift Assignment Breakup (Daily)"
+  },
+  {
+   "chart_name": "Timesheet Activity Breakup (Daily)",
+   "label": "Timesheet Activity Breakup (Daily)"
+  },
+  {
+   "chart_name": "Department wise Timesheet Hours  (Daily)",
+   "label": "Department wise Timesheet Hours  (Daily)"
+  },
+  {
+   "chart_name": "Attendance Count (Daily)",
+   "label": "Attendance Count (Daily)"
+  }
+ ],
+ "content": "[{\"id\":\"UX6AIomqye\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Present (Today)\",\"col\":3}},{\"id\":\"-_RrBDTMIT\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Absent (Today)\",\"col\":3}},{\"id\":\"ukInQixRhm\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Late Entry (Today)\",\"col\":3}},{\"id\":\"-X_BMHoa7M\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Early Exit (Today)\",\"col\":3}},{\"id\":\"Rt4NU45FOr\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Attendance Count (Daily)\",\"col\":12}},{\"id\":\"jlfpkOvLg3\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Timesheet Activity Breakup (Daily)\",\"col\":6}},{\"id\":\"ZgPIGXGaPv\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Shift Assignment Breakup (Daily)\",\"col\":6}},{\"id\":\"HUtBJhxjBu\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Department wise Timesheet Hours  (Daily)\",\"col\":12}},{\"id\":\"s54H0mfwvK\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Attendance Count (Daily)\",\"col\":6}}]",
+ "creation": "2024-10-02 07:41:53.769980",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "table_2",
+ "idx": 1,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Daily Attendance",
+ "links": [],
+ "modified": "2024-10-08 03:48:33.089959",
+ "modified_by": "Administrator",
+ "module": "INTEGRA",
+ "name": "Daily Attendance",
+ "number_cards": [
+  {
+   "label": "Total Present (Today)",
+   "number_card_name": "Total Present (Today)"
+  },
+  {
+   "label": "Early Exit (Today)",
+   "number_card_name": "Early Exit (Today)"
+  },
+  {
+   "label": "Total Absent (Today)",
+   "number_card_name": "Total Absent (Today)"
+  },
+  {
+   "label": "Late Entry (Today)",
+   "number_card_name": "Late Entry (Today)"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 40.1,
+ "shortcuts": [],
+ "title": "Daily Attendance"
+}

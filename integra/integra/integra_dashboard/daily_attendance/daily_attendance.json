@@ -1,0 +1,56 @@
+{
+ "cards": [
+  {
+   "card": "Total Number of Employees"
+  },
+  {
+   "card": "Total Employees"
+  },
+  {
+   "card": "Total Present (Today)"
+  },
+  {
+   "card": "Total Absent (Today)"
+  },
+  {
+   "card": "Early Exit (Today)"
+  },
+  {
+   "card": "Employees With Hikvision Id"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Attendance Count (Daily)",
+   "width": "Full"
+  },
+  {
+   "chart": "Shift Assignment Breakup (Daily)",
+   "width": "Half"
+  },
+  {
+   "chart": "Department wise Timesheet Hours  (Daily)",
+   "width": "Half"
+  },
+  {
+   "chart": "Timesheet Activity Breakup (Daily)",
+   "width": "Half"
+  },
+  {
+   "chart": "Attendance Count (Daily)",
+   "width": "Half"
+  }
+ ],
+ "creation": "2024-10-08 14:18:51.872133",
+ "dashboard_name": "Daily Attendance",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2024-10-08 14:23:41.031312",
+ "modified_by": "Administrator",
+ "module": "INTEGRA",
+ "name": "Daily Attendance",
+ "owner": "Administrator"
+}

@@ -11,7 +11,7 @@ app_license = "mit"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/integra/css/integra.css"
-# app_include_js = "/assets/integra/js/integra.js"
+app_include_js = "/assets/integra/js/manu.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/integra/css/integra.css"
@@ -70,7 +70,7 @@ doctype_js = {"Salary Structure Assignment" : "public/js/salary_structure_assign
 # ------------
 
 # before_install = "integra.install.before_install"
-# after_install = "integra.install.after_install"
+# after_install = "integra.manu.hide_manu"
 
 # Uninstallation
 # ------------
@@ -120,6 +120,7 @@ doctype_js = {"Salary Structure Assignment" : "public/js/salary_structure_assign
 # 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
 
+# before_migrate = "integra.manu.hide_manu"
 # Document Events
 # ---------------
 # Hook on document methods and events

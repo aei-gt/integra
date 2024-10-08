@@ -26,55 +26,43 @@ def fetch_data():
         'timeout=2000;'
     )
 
-    try:
-        connection = pyodbc.connect(conn_str)
-        cursor = connection.cursor()
-        # query = f"""
-        #     SELECT TOP 10
-        #         ID_Global, 
-        #         EmployeeID,
-        #         AccessDate,
-        #         AccessTime,
-        #         AccessDateTime
-        #     FROM {table}
-        #     GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
-        #     ORDER BY AccessDateTime
-        # """
-        query = f"""
-            SELECT 
-                ID_Global, 
-                EmployeeID,
-                AccessDate,
-                AccessTime,
-                AccessDateTime
-            FROM {table}
-            GROUP BY ID_Global, EmployeeID, AccessDate, AccessTime, AccessDateTime 
-            ORDER BY AccessDateTime
-        """
+    connection = pyodbc.connect(conn_str)
+    cursor = connection.cursor()
 
-        cursor.execute(query)
-        columns = [column[0] for column in cursor.description]
-        results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    query = f"""
+        SELECT 
+            ID_Global, 
+            EmployeeID,
+            AccessDate,
+            AccessTime,
+            AccessDateTime
+        FROM {table}
+        WHERE ID_Global > {last_id} -- Only fetch records with ID greater than the last fetched ID
+        ORDER BY AccessDateTime
+    """
 
-        cursor.close()
-        connection.close()
+    cursor.execute(query)
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
-        if not results:
-            frappe.log_error("No new records found in HikVision database.", "Fetch Data Error")
-            return [], None
-        
-        last_record = results[-1]
-        frappe.log("Fetched records: {}".format(results))
-        return results, last_record
+    cursor.close()
+    connection.close()
 
-    except pyodbc.Error as e:
-        frappe.log_error(f"Database connection failed: {e}", "Database Connection Error")
-        frappe.throw(f"Database connection failed: {e}")
+    if not results:
+        print("No new records found in HikVision database.")
+        return [], None
+    
+    last_record = results[-1]
+    # print(f"Fetched records: {results}")  # Remove or comment out this line
+
+    return results, last_record
+
+    
+  
 @frappe.whitelist()
 def fetch_hik_vision_records():
     records, last_record = fetch_data()
     
-
     if not records:
         frappe.msgprint("No new records found.")
         return
@@ -122,6 +110,10 @@ def enqueue_create_attendance(last_id_before_save, last_id_after_save):
 
 @frappe.whitelist()
 def create_attendance(last_id_before_save, last_id_after_save):
+    """
+    This function processes attendance records between the IDs provided, marks present employees, 
+    and calls the `mark_absent_employees` function to mark absent employees for each attendance date.
+    """
     sql_query = """
         SELECT employee_id, access_date, MIN(access_time) AS entry, MAX(access_time) AS exit_time
         FROM `tabHik Vision Attendance`
@@ -131,62 +123,60 @@ def create_attendance(last_id_before_save, last_id_after_save):
     """
     
     attendance_records = frappe.db.sql(sql_query, (last_id_before_save, last_id_after_save), as_dict=True)
-    present_employees = set()
-    result = []
+    
+    if not attendance_records:
+        return
+
+    present_employees_by_date = {}
+    attendance_dates = set()
+    
+    employee_ids = [record['employee_id'] for record in attendance_records]
+    employees_map = frappe.get_all('Employee',filters={'attendance_device_id': ['in', employee_ids]},fields=['name', 'employee_name', 'attendance_device_id'])
+    employees_map = {e['attendance_device_id']: e for e in employees_map}
 
     for record in attendance_records:
-        employee_details = frappe.get_value(
-            'Employee', 
-            {'attendance_device_id': record['employee_id']}, 
-            ['name', 'employee_name'], 
-            as_dict=True
-        )
+        employee_details = employees_map.get(record['employee_id'])
+        attendance_date = get_datetime(record['access_date'])
 
         if employee_details:
-            result.append({
+            attendance_dates.add(attendance_date)
+            if attendance_date not in present_employees_by_date:
+                present_employees_by_date[attendance_date] = set()
+            present_employees_by_date[attendance_date].add(record['employee_id'])
+
+            attendance = frappe.db.get_value('Attendance', {
                 'employee': employee_details['name'],
-                'full_name': employee_details['employee_name'],
-                'employee_id': record['employee_id'],
-                'date': record['access_date'],
-                'entry': record['entry'],
-                'exit_time': record['exit_time']
-            })
+                'attendance_date': attendance_date
+            }, ['name', 'status'])
 
-    for record in result:
-        employee_id = record['employee_id']
-        attendance_date = get_datetime(record['date'])
-        present_employees.add(employee_id)
-
-        attendance = frappe.db.get_value('Attendance', {
-            'employee': employee_id,
-            'attendance_date': attendance_date
-        }, ['name', 'status'])
-
-        if attendance:
-            attendance_name, status = attendance
-            if status == 'Absent':
-                doc = frappe.get_doc("Attendance", attendance_name)
+            if attendance:
+                attendance_name, status = attendance
+                if status == 'Absent':
+                    doc = frappe.get_doc("Attendance", attendance_name)
+                    doc.status = "Present"
+                    doc.save()
+                    doc.submit()
+            else:
+                doc = frappe.new_doc("Attendance")
+                doc.employee = employee_details['name']
+                doc.attendance_date = attendance_date
                 doc.status = "Present"
-                doc.save()
+                doc.insert()
                 doc.submit()
-        else:
-            doc = frappe.new_doc("Attendance")
-            employee_details = frappe.get_all('Employee', {'attendance_device_id': record['employee_id']})
 
-            if employee_details:
-                doc.employee = employee_details[0]['name']
-            
-            doc.attendance_date = attendance_date
-            doc.status = "Present"
-            doc.insert()
-            doc.submit()
-
-    mark_absent_employees(present_employees, attendance_date)
+    for attendance_date in attendance_dates:
+        present_employees = present_employees_by_date.get(attendance_date, set())
+        mark_absent_employees(present_employees, attendance_date)
+    
     frappe.db.commit()
 
 
 @frappe.whitelist()
 def mark_absent_employees(present_employees, attendance_date):
+    """
+    This function marks employees absent if they are not in the present_employees set for the given attendance date.
+    """
+    
     list_employee_have_id = frappe.get_all(
         "Employee", 
         filters={'attendance_device_id': ['!=', '']}, 

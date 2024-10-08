@@ -123,7 +123,7 @@ def create_attendance(last_id_before_save, last_id_after_save):
     """
     
     attendance_records = frappe.db.sql(sql_query, (last_id_before_save, last_id_after_save), as_dict=True)
-    
+    # frappe.msgprint(f"Updated last ID: {len(attendance_records)}.")
     if not attendance_records:
         return
 

@@ -1,0 +1,83 @@
+{
+ "charts": [
+  {
+   "chart_name": "Attendence list",
+   "label": "Attendence Based on Fillter"
+  },
+  {
+   "chart_name": "Shift Assignment Breakup (Daily)",
+   "label": "Shift Assignment Breakup (Daily)"
+  },
+  {
+   "chart_name": "Timesheet Activity Breakup (Daily)",
+   "label": "Timesheet Activity Breakup (Daily)"
+  },
+  {
+   "chart_name": "Department wise Timesheet Hours  (Daily)",
+   "label": "Department wise Timesheet Hours  (Daily)"
+  },
+  {
+   "chart_name": "Attendance Count (Daily)",
+   "label": "Attendance Count (Daily)"
+  }
+ ],
+ "content": "[{\"id\":\"zfpBvh3l_w\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Number of Employees\",\"col\":3}},{\"id\":\"PMmsk46uP_\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Employee\",\"col\":3}},{\"id\":\"o4BwT0DGOA\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Employees With Hikvision Id\",\"col\":3}},{\"id\":\"Xzyh9feBq_\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Employee Missing Hikvision ID\",\"col\":3}},{\"id\":\"-vA-fh-2hv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"UX6AIomqye\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Present (Today)\",\"col\":3}},{\"id\":\"-_RrBDTMIT\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Absent (Today)\",\"col\":3}},{\"id\":\"ukInQixRhm\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Late Entry (Today)\",\"col\":3}},{\"id\":\"-X_BMHoa7M\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Early Exit (Today)\",\"col\":3}},{\"id\":\"Rt4NU45FOr\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Attendance Count (Daily)\",\"col\":12}},{\"id\":\"cIpDBwwk2F\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Attendence Based on Fillter\",\"col\":12}},{\"id\":\"jlfpkOvLg3\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Timesheet Activity Breakup (Daily)\",\"col\":6}},{\"id\":\"ZgPIGXGaPv\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Shift Assignment Breakup (Daily)\",\"col\":6}},{\"id\":\"HUtBJhxjBu\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Department wise Timesheet Hours  (Daily)\",\"col\":12}},{\"id\":\"s54H0mfwvK\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Attendance Count (Daily)\",\"col\":6}}]",
+ "creation": "2024-10-09 02:22:00.959316",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "table_2",
+ "idx": 1,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Daily Employee Attendance",
+ "links": [],
+ "modified": "2024-10-09 02:22:19.465443",
+ "modified_by": "Administrator",
+ "module": "INTEGRA",
+ "name": "Daily Employee Attendance",
+ "number_cards": [
+  {
+   "label": "Total Number of Employees",
+   "number_card_name": "Total Number of Employees"
+  },
+  {
+   "label": "Total Present (Today)",
+   "number_card_name": "Total Present (Today)"
+  },
+  {
+   "label": "Early Exit (Today)",
+   "number_card_name": "Early Exit (Today)"
+  },
+  {
+   "label": "Active Employee",
+   "number_card_name": "Active Employee"
+  },
+  {
+   "label": "Employees With Hikvision Id",
+   "number_card_name": "Employees With Hikvision Id"
+  },
+  {
+   "label": "Total Absent (Today)",
+   "number_card_name": "Total Absent (Today)"
+  },
+  {
+   "label": "Late Entry (Today)",
+   "number_card_name": "Late Entry (Today)"
+  },
+  {
+   "label": "Employee Missing Hikvision ID",
+   "number_card_name": "Employee Missing Hikvision ID"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "HR",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 40.2,
+ "shortcuts": [],
+ "title": "Daily Employee Attendance"
+}

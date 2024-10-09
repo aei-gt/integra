@@ -3,7 +3,7 @@ for(let row of modules){
     frappe.db.get_value('Workspace', row, 'parent_page')
     .then(r => {
         if (r.message && r.message.parent_page != "HR") {
-            frappe.db.set_value('Workspace', row, 'parent_page', 'HR')
+            frappe.db.set_value('Workspace', row, 'parent_page', '')
                 .then(r => {
                 let doc = r.message;
                 doc.save()

@@ -13,16 +13,16 @@
 //         }
 //     });
 // }
-frappe.db.set_value("Workspace", "Projects", "parent_page", "");
-frappe.db.set_value("Workspace", "Quality", "parent_page", "");
-frappe.db.set_value("Workspace", "CRM", "parent_page", "");
-frappe.db.set_value("Workspace", "Manufacturing", "parent_page", "");
-frappe.db.set_value("Workspace", "Support", "parent_page", "");
-frappe.db.set_value("Workspace", "Users", "parent_page", "");
-frappe.db.set_value("Workspace", "Website", "parent_page", "");
-frappe.db.set_value("Workspace", "Payroll", "parent_page", "");
-frappe.db.set_value("Workspace", "Tools", "parent_page", "");
-frappe.db.set_value("Workspace", "ERPNext Settings", "parent_page", "");
-frappe.db.set_value("Workspace", "Integrations", "parent_page", "");
-frappe.db.set_value("Workspace", "ERPNext Integrations", "parent_page", "");
-frappe.db.set_value("Workspace", "Build", "parent_page", "");
+// frappe.db.set_value("Workspace", "Projects", "parent_page", "");
+// frappe.db.set_value("Workspace", "Quality", "parent_page", "");
+// frappe.db.set_value("Workspace", "CRM", "parent_page", "");
+// frappe.db.set_value("Workspace", "Manufacturing", "parent_page", "");
+// frappe.db.set_value("Workspace", "Support", "parent_page", "");
+// frappe.db.set_value("Workspace", "Users", "parent_page", "");
+// frappe.db.set_value("Workspace", "Website", "parent_page", "");
+// frappe.db.set_value("Workspace", "Payroll", "parent_page", "");
+// frappe.db.set_value("Workspace", "Tools", "parent_page", "");
+// frappe.db.set_value("Workspace", "ERPNext Settings", "parent_page", "");
+// frappe.db.set_value("Workspace", "Integrations", "parent_page", "");
+// frappe.db.set_value("Workspace", "ERPNext Integrations", "parent_page", "");
+// frappe.db.set_value("Workspace", "Build", "parent_page", "");

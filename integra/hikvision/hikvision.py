@@ -179,7 +179,7 @@ def mark_absent_employees(present_employees, attendance_date):
     
     list_employee_have_id = frappe.get_all(
         "Employee", 
-        filters={'attendance_device_id': ['!=', '']}, 
+        filters={'attendance_device_id': ['!=', ''],"status":"Active"}, 
         fields=['name']
     )
 

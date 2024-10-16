@@ -107,12 +107,11 @@ def enqueue_create_attendance(last_id_before_save, last_id_after_save):
         last_id_after_save=last_id_after_save
     )
 
-
 @frappe.whitelist()
 def create_attendance(last_id_before_save, last_id_after_save):
     """
-    This function processes attendance records between the IDs provided, marks present employees, 
-    and calls the `mark_absent_employees` function to mark absent employees for each attendance date.
+    Process attendance records between the provided IDs, mark present employees, 
+    and call the `mark_absent_employees` function to mark absent employees for each attendance date.
     """
     sql_query = """
         SELECT employee_id, access_date, MIN(access_time) AS entry, MAX(access_time) AS exit_time
@@ -123,15 +122,22 @@ def create_attendance(last_id_before_save, last_id_after_save):
     """
     
     attendance_records = frappe.db.sql(sql_query, (last_id_before_save, last_id_after_save), as_dict=True)
-    # frappe.msgprint(f"Updated last ID: {len(attendance_records)}.")
+    frappe.msgprint(f"Attendance records: {len(attendance_records)}.")
+    
     if not attendance_records:
         return
 
     present_employees_by_date = {}
     attendance_dates = set()
-    
+
+    # Fetch employees mapped by attendance_device_id
     employee_ids = [record['employee_id'] for record in attendance_records]
-    employees_map = frappe.get_all('Employee',filters={'attendance_device_id': ['in', employee_ids]},fields=['name', 'employee_name', 'attendance_device_id'])
+    employees_map = frappe.get_all(
+        'Employee',
+        filters={'attendance_device_id': ['in', employee_ids], 'status': 'Active'},
+        fields=['name', 'employee_name', 'attendance_device_id', 'date_of_joining']
+    )
+    frappe.msgprint(f"{len(employees_map)}")
     employees_map = {e['attendance_device_id']: e for e in employees_map}
 
     for record in attendance_records:
@@ -139,11 +145,17 @@ def create_attendance(last_id_before_save, last_id_after_save):
         attendance_date = get_datetime(record['access_date'])
 
         if employee_details:
-            attendance_dates.add(attendance_date)
-            if attendance_date not in present_employees_by_date:
-                present_employees_by_date[attendance_date] = set()
-            present_employees_by_date[attendance_date].add(record['employee_id'])
+            # Skip marking attendance if attendance date is less than joining date
+            joining_date = employee_details.get('date_of_joining')
+            if joining_date and attendance_date < get_datetime(joining_date):
+                frappe.msgprint(f"Skipping attendance for {record['employee_id']} on {attendance_date} due to joining date {joining_date}.")
+                continue  # Skip this record
 
+            # Mark employee as present
+            attendance_dates.add(attendance_date)
+            present_employees_by_date.setdefault(attendance_date, set()).add(record['employee_id'])
+
+            # Check if an attendance record exists
             attendance = frappe.db.get_value('Attendance', {
                 'employee': employee_details['name'],
                 'attendance_date': attendance_date
@@ -152,11 +164,13 @@ def create_attendance(last_id_before_save, last_id_after_save):
             if attendance:
                 attendance_name, status = attendance
                 if status == 'Absent':
+                    # Change from Absent to Present
                     doc = frappe.get_doc("Attendance", attendance_name)
                     doc.status = "Present"
                     doc.save()
                     doc.submit()
             else:
+                # Create new attendance record for present
                 doc = frappe.new_doc("Attendance")
                 doc.employee = employee_details['name']
                 doc.attendance_date = attendance_date
@@ -164,26 +178,34 @@ def create_attendance(last_id_before_save, last_id_after_save):
                 doc.insert()
                 doc.submit()
 
+    # Mark absent employees for processed dates
     for attendance_date in attendance_dates:
         present_employees = present_employees_by_date.get(attendance_date, set())
         mark_absent_employees(present_employees, attendance_date)
-    
+
     frappe.db.commit()
 
 
 @frappe.whitelist()
 def mark_absent_employees(present_employees, attendance_date):
     """
-    This function marks employees absent if they are not in the present_employees set for the given attendance date.
+    Marks employees absent if they are not in the present_employees set for the given attendance date,
+    and skips employees whose joining date is after the attendance date.
     """
-    
     list_employee_have_id = frappe.get_all(
         "Employee", 
-        filters={'attendance_device_id': ['!=', ''],"status":"Active"}, 
-        fields=['name']
+        filters={'attendance_device_id': ['!=', ''], "status": "Active"}, 
+        fields=['name', 'date_of_joining']
     )
 
     for employee in list_employee_have_id:
+        # Skip if attendance date is before the joining date
+        joining_date = get_datetime(employee.get('date_of_joining'))
+        if joining_date and attendance_date < joining_date:
+            frappe.msgprint(f"Skipping absence marking for {employee['name']} on {attendance_date} due to joining date {joining_date}.")
+            continue
+
+        # Mark employee absent if not already present
         if employee['name'] not in present_employees:
             attendance_exists = frappe.db.get_value('Attendance', {
                 'employee': employee['name'],
@@ -191,6 +213,7 @@ def mark_absent_employees(present_employees, attendance_date):
             }, ['name', 'status'])
 
             if not attendance_exists:
+                # Create an attendance record for absent
                 attendance = frappe.get_doc({
                     'doctype': 'Attendance',
                     'employee': employee['name'],
@@ -198,10 +221,6 @@ def mark_absent_employees(present_employees, attendance_date):
                     'status': 'Absent'
                 })
                 attendance.insert()
-            else:
-                attendance_name, status = attendance_exists
-                if status == 'Absent':
-                    continue
 
     frappe.db.commit()
 

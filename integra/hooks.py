@@ -131,7 +131,7 @@ doc_events = {
 		"validate": "integra.events.validator.validator",
     },
     "Issue": {
-		"after_insert": "integra.events.api.send_new_whatsapp_message",
+		"after_insert": "integra.events.api.send_new_client_whatsapp_message",
         "on_update": "integra.events.api.send_updated_whatsapp_message",
     }
 }

@@ -30,10 +30,12 @@ def send_new_client_whatsapp_message(doc, method=None):
 			send_message(employee.cell_number, message, api_key, url)
 	
 def send_updated_whatsapp_message(doc, method=None):
+	if doc.creation == doc.modified:
+		return
+	old_doc = doc.get_doc_before_save()
 	settings = frappe.get_doc("Evolution Api Settings", "Evolution Api Settings")
 	url = settings.url
 	api_key = settings.api_key
-	old_doc = doc.get_doc_before_save()
 	plain_description = strip_html_tags(doc.description)
 	message = f'Issue no. {doc.name} is updated with description "{plain_description}"'
 

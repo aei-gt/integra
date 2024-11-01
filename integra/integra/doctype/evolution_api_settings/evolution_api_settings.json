@@ -6,10 +6,8 @@
  "engine": "InnoDB",
  "field_order": [
   "url",
-  "number",
   "column_break_bdhi",
-  "api_key",
-  "message"
+  "api_key"
  ],
  "fields": [
   {
@@ -25,22 +23,12 @@
    "fieldname": "api_key",
    "fieldtype": "Data",
    "label": "API Key"
-  },
-  {
-   "fieldname": "number",
-   "fieldtype": "Data",
-   "label": "Number"
-  },
-  {
-   "fieldname": "message",
-   "fieldtype": "Small Text",
-   "label": "Message"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-11-01 19:31:43.697722",
+ "modified": "2024-11-01 22:05:32.896447",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "Evolution Api Settings",

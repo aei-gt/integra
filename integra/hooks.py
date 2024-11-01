@@ -29,7 +29,8 @@ app_license = "mit"
 
 # include js in doctype views
 doctype_js = {"Salary Structure Assignment" : "public/js/salary_structure_assignment.js",
-              "Employee" : "public/js/employee.js"}
+              "Employee" : "public/js/employee.js",
+              "Issue" : "public/js/issue.js"}
 # doctype_js = {"Employee" : "public/js/employee.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -128,6 +129,10 @@ doctype_js = {"Salary Structure Assignment" : "public/js/salary_structure_assign
 doc_events = {
 	"Employee": {
 		"validate": "integra.events.validator.validator",
+    },
+    "Issue": {
+		"after_insert": "integra.events.api.send_new_whatsapp_message",
+        "on_update": "integra.events.api.send_updated_whatsapp_message",
     }
 }
 

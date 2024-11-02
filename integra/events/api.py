@@ -4,6 +4,14 @@ import requests
 
 
 def send_new_client_whatsapp_message(doc, method=None):
+	
+	naming_series = doc.name 
+	parts = naming_series.split('-')
+	if len(parts) == 3:
+		year = parts[1][2:] 
+		doc_number = parts[2].lstrip('0')
+		doc.id_document_short = f"{year}{doc_number}"
+		doc.save()
 	settings = frappe.get_doc("Evolution Api Settings", "Evolution Api Settings")
 	url = settings.url
 	api_key = settings.api_key
@@ -18,7 +26,7 @@ def send_new_client_whatsapp_message(doc, method=None):
 	# Send message to employee linked to issue type, if available
 	if doc.issue_type:
 		issue_type = frappe.get_doc("Issue Type", doc.issue_type)
-		if issue_type.custom_employee:
+		if issue_type.custom_employee:                             
 			employee = frappe.get_doc("Employee", issue_type.custom_employee)
 			send_message(employee.cell_number, message, api_key, url)
 

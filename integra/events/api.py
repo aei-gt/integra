@@ -10,7 +10,7 @@ def send_new_client_whatsapp_message(doc, method=None):
 	if len(parts) == 3:
 		year = parts[1][2:] 
 		doc_number = parts[2].lstrip('0')
-		doc.id_document_short = f"{year}{doc_number}"
+		doc.custom_id_document = f"{year}{doc_number}"
 		doc.save()
 	settings = frappe.get_doc("Evolution Api Settings", "Evolution Api Settings")
 	url = settings.url

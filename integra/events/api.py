@@ -15,29 +15,39 @@ def send_new_client_whatsapp_message(doc, method=None):
 	settings = frappe.get_doc("Evolution Api Settings", "Evolution Api Settings")
 	url = settings.url
 	api_key = settings.api_key
-	
-	plain_description = strip_html_tags(doc.description)
+	plain_description = ''
+	if doc.description:
+		plain_description = strip_html_tags(doc.description)
+
 	base_url = frappe.utils.get_url()  # This will fetch the base URL of your Frappe site
 	doc_name = f"{base_url}/app/issue/{doc.name}"
-	message = f'Issue no. {doc_name} is created with description "{plain_description}"'
+	client_message = f"Su solicitud ha sido procesada con referencia {doc.custom_id_document} asunto & {plain_description}"
+	emp_message = f"Se le asigno la solicitud con referencia {doc.custom_id_document} this id_document with the full url {doc_name}, asunto & {doc.custom_movement[-1].notes}"
+
 	
 	# Send message to custom WhatsApp number if available
 	if doc.custom_whatsapp_number:
-		send_message(doc.custom_whatsapp_number, message, api_key, url)
-
-	# Send message to employee linked to issue type, if available
-	if doc.issue_type:
-		issue_type = frappe.get_doc("Issue Type", doc.issue_type)
-		if issue_type.custom_employee:                             
-			employee = frappe.get_doc("Employee", issue_type.custom_employee)
-			send_message(employee.cell_number, message, api_key, url)
+		send_message(doc.custom_whatsapp_number, client_message, api_key, url)
 
 	# Send message to last employee in custom movement if available
 	if doc.custom_movement and len(doc.custom_movement) > 0:
 		last_movement = doc.custom_movement[-1]
 		if last_movement.empleado:
 			employee = frappe.get_doc("Employee", last_movement.empleado)
-			send_message(employee.cell_number, message, api_key, url)
+			send_message(employee.cell_number, emp_message, api_key, url)
+
+	# Send message to employee linked to issue type, if available
+	if doc.issue_type:
+		issue_type = frappe.get_doc("Issue Type", doc.issue_type)
+		if issue_type.description:
+			manager_message = f"Se le asigno la solicitud con referencia {doc.custom_id_document} this id_document with the full url {doc_name}, asunto & {issue_type.description}"
+		else:
+			manager_message = f"Se le asigno la solicitud con referencia {doc.custom_id_document} this id_document with the full url {doc_name}, asunto & {doc.custom_movement[-1].notes}"
+
+		if issue_type.custom_employee:                             
+			employee = frappe.get_doc("Employee", issue_type.custom_employee)
+			send_message(employee.cell_number, manager_message, api_key, url)
+
 	
 def send_updated_whatsapp_message(doc, method=None):
 	if doc.creation == doc.modified:
@@ -46,25 +56,31 @@ def send_updated_whatsapp_message(doc, method=None):
 	settings = frappe.get_doc("Evolution Api Settings", "Evolution Api Settings")
 	url = settings.url
 	api_key = settings.api_key
-	plain_description = strip_html_tags(doc.description)
-
+	plain_description = ''
+	if doc.description:
+		plain_description = strip_html_tags(doc.description)
 	base_url = frappe.utils.get_url()  # This will fetch the base URL of your Frappe site
 	doc_name = f"{base_url}/app/issue/{doc.name}"
-	message = f'Issue no. {doc_name} is updated with description "{plain_description}"'
+	emp_message = f"Se le asigno la solicitud con referencia {doc.custom_id_document} this id_document with the full url {doc_name}, asunto & {doc.custom_movement[-1].notes}"
+	
 
 	# Send message if there's a new entry in custom movement
 	if doc.custom_movement and (len(old_doc.custom_movement) < len(doc.custom_movement)):
 		last_movement = doc.custom_movement[-1]
 		if last_movement.empleado:
 			employee = frappe.get_doc("Employee", last_movement.empleado)
-			send_message(employee.cell_number, message, api_key, url)
+			send_message(employee.cell_number, emp_message, api_key, url)
 	
 	# Set manager and send message if issue type has a custom employee
 	if doc.issue_type and doc.status != "Closed":
 		issue_type = frappe.get_doc("Issue Type", doc.issue_type)
+		if issue_type.description:
+			manager_message = f"Se le asigno la solicitud con referencia {doc.custom_id_document} this id_document with the full url {doc_name}, asunto & {issue_type.description}"
+		else:
+			manager_message = f"Se le asigno la solicitud con referencia {doc.custom_id_document} this id_document with the full url {doc_name}, asunto & {doc.custom_movement[-1].notes}"
 		if issue_type.custom_employee:
 			manager = frappe.get_doc("Employee", issue_type.custom_employee)
-			send_message(manager.cell_number, message, api_key, url)
+			send_message(manager.cell_number, manager_message, api_key, url)
 	
 	# Send message if the issue status is closed
 	if doc.status == "Closed":
@@ -74,7 +90,8 @@ def send_updated_whatsapp_message(doc, method=None):
 			if issue_type.custom_employee:
 				manager = frappe.get_doc("Employee", issue_type.custom_employee)
 				manager_number = manager.cell_number
-		message = f"Your emergency issue no. {doc.name} is Closed."
+		message = f"Su solicitud ha sido procesada con referencia {doc.custom_id_document} y esta finalizado"
+		# message = f"Your emergency issue no. {doc.custom_id_document} is Closed."
 		if manager_number:
 			send_message(manager_number, message, api_key, url)
 		if doc.custom_whatsapp_number:

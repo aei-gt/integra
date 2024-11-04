@@ -3,7 +3,6 @@ frappe.ui.form.on('Issue', {
         // Check if the field has a value selected
         if (frm.doc.priority) {
             frm.set_value('custom_custom_priority', frm.doc.priority);
-            frm.set_df_property('custom_custom_priority', 'hidden', 1);
         }
     }
     

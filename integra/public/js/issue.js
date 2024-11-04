@@ -1,4 +1,11 @@
 frappe.ui.form.on('Issue', {
+    validate: function(frm) {
+        // Check if the field has a value selected
+        if (frm.doc.priority) {
+            frm.set_value('custom_custom_priority', frm.doc.priority);
+            frm.set_df_property('custom_custom_priority', 'hidden', 1);
+        }
+    }
 //     onload: function(frm) {
 //         // Set query on the child table field based on another field within the same row
 //         frm.fields_dict['custom_movement'].grid.get_field('departamento').get_query = function(doc, cdt, cdn) {

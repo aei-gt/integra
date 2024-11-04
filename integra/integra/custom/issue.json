@@ -11,7 +11,11 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+<<<<<<< Updated upstream
    "creation": "2024-11-02 18:26:29.337020",
+=======
+   "creation": "2024-11-04 17:42:09.233849",
+>>>>>>> Stashed changes
    "default": null,
    "depends_on": null,
    "description": null,
@@ -19,19 +23,29 @@
    "dt": "Issue",
    "fetch_from": null,
    "fetch_if_empty": 0,
+<<<<<<< Updated upstream
    "fieldname": "custom_column_break_wxp6c",
    "fieldtype": "Column Break",
+=======
+   "fieldname": "custom_custom_priority",
+   "fieldtype": "Select",
+>>>>>>> Stashed changes
    "hidden": 0,
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< Updated upstream
    "idx": 17,
+=======
+   "idx": 10,
+>>>>>>> Stashed changes
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
    "in_list_view": 0,
    "in_preview": 0,
    "in_standard_filter": 0,
+<<<<<<< Updated upstream
    "insert_after": "sb_details",
    "is_system_generated": 0,
    "is_virtual": 0,
@@ -48,6 +62,25 @@
    "options": null,
    "owner": "Administrator",
    "permlevel": 0,
+=======
+   "insert_after": "priority",
+   "is_system_generated": 0,
+   "is_virtual": 0,
+   "label": "Custom Priority",
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": null,
+   "modified": "2024-11-04 17:42:09.233849",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Issue-custom_custom_priority",
+   "no_copy": 0,
+   "non_negative": 0,
+   "options": "\nHigh\nMedium\nLow",
+   "owner": "Administrator",
+   "permlevel": 0,
+   "placeholder": null,
+>>>>>>> Stashed changes
    "precision": "",
    "print_hide": 0,
    "print_hide_if_no_value": 0,
@@ -74,6 +107,7 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+<<<<<<< Updated upstream
    "creation": "2024-11-02 18:38:23.803901",
    "default": null,
    "depends_on": null,
@@ -200,6 +234,8 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+=======
+>>>>>>> Stashed changes
    "creation": "2024-11-01 21:29:18.203212",
    "default": null,
    "depends_on": null,
@@ -214,7 +250,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< Updated upstream
    "idx": 19,
+=======
+   "idx": 17,
+>>>>>>> Stashed changes
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -237,6 +277,7 @@
    "options": "Issue Movement",
    "owner": "Administrator",
    "permlevel": 0,
+   "placeholder": null,
    "precision": "",
    "print_hide": 0,
    "print_hide_if_no_value": 0,
@@ -300,6 +341,7 @@
    "options": null,
    "owner": "Administrator",
    "permlevel": 0,
+   "placeholder": null,
    "precision": "",
    "print_hide": 0,
    "print_hide_if_no_value": 0,
@@ -340,7 +382,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< Updated upstream
    "idx": 18,
+=======
+   "idx": 16,
+>>>>>>> Stashed changes
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -363,6 +409,7 @@
    "options": null,
    "owner": "Administrator",
    "permlevel": 0,
+   "placeholder": null,
    "precision": "",
    "print_hide": 0,
    "print_hide_if_no_value": 0,
@@ -426,6 +473,7 @@
    "options": null,
    "owner": "Administrator",
    "permlevel": 0,
+   "placeholder": null,
    "precision": "",
    "print_hide": 0,
    "print_hide_if_no_value": 0,
@@ -505,7 +553,11 @@
    "field_name": "issue_type",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< Updated upstream
    "modified": "2024-11-02 19:40:56.390542",
+=======
+   "modified": "2024-11-04 17:38:47.946365",
+>>>>>>> Stashed changes
    "modified_by": "Administrator",
    "module": null,
    "name": "Issue-issue_type-reqd",
@@ -520,7 +572,11 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
+<<<<<<< Updated upstream
    "creation": "2024-11-02 19:43:06.483724",
+=======
+   "creation": "2024-11-04 17:42:17.338062",
+>>>>>>> Stashed changes
    "default_value": null,
    "doc_type": "Issue",
    "docstatus": 0,
@@ -528,7 +584,11 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< Updated upstream
    "modified": "2024-11-02 19:43:06.483724",
+=======
+   "modified": "2024-11-04 17:42:17.338062",
+>>>>>>> Stashed changes
    "modified_by": "Administrator",
    "module": null,
    "name": "Issue-main-field_order",
@@ -536,7 +596,11 @@
    "property": "field_order",
    "property_type": "Data",
    "row_name": null,
+<<<<<<< Updated upstream
    "value": "[\"subject_section\", \"naming_series\", \"custom_id_document\", \"subject\", \"customer\", \"raised_by\", \"custom_whatsapp_number\", \"custom_section_break_nyyj2\", \"cb00\", \"status\", \"priority\", \"issue_type\", \"issue_split_from\", \"custom_details\", \"description\", \"sb_details\", \"custom_column_break_wxp6c\", \"custom_section_break_trxi5\", \"custom_movement\", \"service_level_section\", \"service_level_agreement\", \"response_by\", \"reset_service_level_agreement\", \"cb\", \"agreement_status\", \"resolution_by\", \"service_level_agreement_creation\", \"on_hold_since\", \"total_hold_time\", \"response\", \"first_response_time\", \"first_responded_on\", \"column_break_26\", \"avg_response_time\", \"section_break_19\", \"resolution_details\", \"column_break1\", \"opening_date\", \"opening_time\", \"resolution_date\", \"resolution_time\", \"user_resolution_time\", \"additional_info\", \"lead\", \"contact\", \"email_account\", \"column_break_16\", \"customer_name\", \"project\", \"company\", \"via_customer_portal\", \"attachment\", \"content_type\"]"
+=======
+   "value": "[\"subject_section\", \"naming_series\", \"subject\", \"customer\", \"raised_by\", \"custom_whatsapp_number\", \"custom_section_break_nyyj2\", \"cb00\", \"status\", \"priority\", \"custom_custom_priority\", \"issue_type\", \"issue_split_from\", \"sb_details\", \"description\", \"custom_section_break_trxi5\", \"custom_movement\", \"service_level_section\", \"service_level_agreement\", \"response_by\", \"reset_service_level_agreement\", \"cb\", \"agreement_status\", \"resolution_by\", \"service_level_agreement_creation\", \"on_hold_since\", \"total_hold_time\", \"response\", \"first_response_time\", \"first_responded_on\", \"column_break_26\", \"avg_response_time\", \"section_break_19\", \"resolution_details\", \"column_break1\", \"opening_date\", \"opening_time\", \"resolution_date\", \"resolution_time\", \"user_resolution_time\", \"additional_info\", \"lead\", \"contact\", \"email_account\", \"column_break_16\", \"customer_name\", \"project\", \"company\", \"via_customer_portal\", \"attachment\", \"content_type\"]"
+>>>>>>> Stashed changes
   },
   {
    "_assign": null,
@@ -551,7 +615,11 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< Updated upstream
    "modified": "2024-11-02 19:40:56.418353",
+=======
+   "modified": "2024-11-04 17:38:47.982907",
+>>>>>>> Stashed changes
    "modified_by": "Administrator",
    "module": null,
    "name": "Issue-main-quick_entry",

@@ -22,7 +22,6 @@ def send_new_client_whatsapp_message(doc, method=None):
 	base_url = frappe.utils.get_url()  # This will fetch the base URL of your Frappe site
 	doc_name = f"{base_url}/app/issue/{doc.name}"
 	client_message = f"Su solicitud ha sido procesada con referencia {doc.custom_id_document} asunto & {plain_description}"
-	emp_message = f"Se le asigno la solicitud con referencia {doc.custom_id_document} this id_document with the full url {doc_name}, asunto & {doc.custom_movement[-1].notes}"
 
 	
 	# Send message to custom WhatsApp number if available
@@ -31,6 +30,7 @@ def send_new_client_whatsapp_message(doc, method=None):
 
 	# Send message to last employee in custom movement if available
 	if doc.custom_movement and len(doc.custom_movement) > 0:
+		emp_message = f"Se le asigno la solicitud con referencia {doc.custom_id_document} this id_document with the full url {doc_name}, asunto & {doc.custom_movement[-1].notes}"
 		last_movement = doc.custom_movement[-1]
 		if last_movement.empleado:
 			employee = frappe.get_doc("Employee", last_movement.empleado)

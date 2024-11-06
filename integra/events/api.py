@@ -61,11 +61,11 @@ def send_updated_whatsapp_message(doc, method=None):
 		plain_description = strip_html_tags(doc.description)
 	base_url = frappe.utils.get_url()  # This will fetch the base URL of your Frappe site
 	doc_name = f"{base_url}/app/issue/{doc.name}"
-	emp_message = f"Se le asigno la solicitud con referencia {doc.custom_id_document} this id_document with the full url {doc_name}, asunto & {doc.custom_movement[-1].notes}"
 	
 
 	# Send message if there's a new entry in custom movement
 	if doc.custom_movement and (len(old_doc.custom_movement) < len(doc.custom_movement)):
+		emp_message = f"Se le asigno la solicitud con referencia {doc.custom_id_document} this id_document with the full url {doc_name}, asunto & {doc.custom_movement[-1].notes}"
 		last_movement = doc.custom_movement[-1]
 		if last_movement.empleado:
 			employee = frappe.get_doc("Employee", last_movement.empleado)

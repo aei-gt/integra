@@ -7,8 +7,11 @@
  "field_order": [
   "section_break_plap",
   "url",
+  "client_message",
+  "employee_message",
   "column_break_bdhi",
-  "api_key"
+  "api_key",
+  "manager_message"
  ],
  "fields": [
   {
@@ -28,12 +31,27 @@
   {
    "fieldname": "section_break_plap",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "client_message",
+   "fieldtype": "Small Text",
+   "label": "Client Message"
+  },
+  {
+   "fieldname": "employee_message",
+   "fieldtype": "Small Text",
+   "label": "Employee Message"
+  },
+  {
+   "fieldname": "manager_message",
+   "fieldtype": "Small Text",
+   "label": "Manager Message"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-11-04 22:33:54.294171",
+ "modified": "2024-11-08 18:41:53.769505",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "Evolution Api Settings",

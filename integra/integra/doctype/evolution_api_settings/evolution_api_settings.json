@@ -1,41 +1,26 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2024-11-01 19:27:09.292682",
+ "creation": "2024-11-09 02:46:27.549467",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "manager_message",
+  "employee_message",
+  "column_break_oikz",
+  "client_message",
   "section_break_plap",
   "url",
-  "client_message",
-  "employee_message",
+  "column_break_qnvk",
+  "media_url",
   "column_break_bdhi",
-  "api_key",
-  "manager_message"
+  "api_key"
  ],
  "fields": [
   {
-   "fieldname": "url",
-   "fieldtype": "Data",
-   "label": "Url"
-  },
-  {
-   "fieldname": "column_break_bdhi",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "api_key",
-   "fieldtype": "Data",
-   "label": "API Key"
-  },
-  {
-   "fieldname": "section_break_plap",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "client_message",
+   "fieldname": "manager_message",
    "fieldtype": "Small Text",
-   "label": "Client Message"
+   "label": "Manager Message"
   },
   {
    "fieldname": "employee_message",
@@ -43,15 +28,48 @@
    "label": "Employee Message"
   },
   {
-   "fieldname": "manager_message",
+   "fieldname": "column_break_oikz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "client_message",
    "fieldtype": "Small Text",
-   "label": "Manager Message"
+   "label": "Client Message"
+  },
+  {
+   "collapsible_depends_on": "eval:doc.docstatus==0",
+   "fieldname": "section_break_plap",
+   "fieldtype": "Section Break",
+   "label": "API's & URL"
+  },
+  {
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "Url"
+  },
+  {
+   "fieldname": "column_break_qnvk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "media_url",
+   "fieldtype": "Data",
+   "label": "Media Url"
+  },
+  {
+   "fieldname": "column_break_bdhi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Data",
+   "label": "API Key"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-11-08 18:41:53.769505",
+ "modified": "2024-11-09 02:46:27.549467",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "Evolution Api Settings",

@@ -127,3 +127,7 @@ def send_message(number, message, api_key, url):
 		response.raise_for_status()
 	except requests.exceptions.RequestException as e:
 		frappe.log_error(message=str(e), title="WhatsApp Message Sending Failed")
+
+
+
+

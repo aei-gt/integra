@@ -1,10 +1,10 @@
 frappe.ui.form.on('Issue', {
-    validate: function(frm) {
-        // Check if the field has a value selected
-        if (frm.doc.priority) {
-            frm.set_value('custom_custom_priority', frm.doc.priority);
-        }
-    }
+    // validate: function(frm) {
+    //     // Check if the field has a value selected
+    //     if (frm.doc.priority) {
+    //         frm.set_value('custom_custom_priority', frm.doc.priority);
+    //     }
+    // }
     
 //     onload: function(frm) {
 //         // Set query on the child table field based on another field within the same row

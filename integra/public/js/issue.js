@@ -44,13 +44,18 @@ frappe.ui.form.on("Issue Movement", {
     empleado: function(frm, cdt, cdn) {
         let row = locals[cdt][cdn]; 
         if (row.empleado) {
-            frappe.db.get_value("Employee", row.empleado, "department")
-                .then(r => {
-                    if (r && r.message) {
-                        let department = r.message.department;
-                        frappe.model.set_value(cdt, cdn, "departamento", department);
-                    }
-                });
+            frappe.db.get_value("Employee", row.empleado, ["first_name", "last_name", "department"])
+            .then(r => {
+                if (r && r.message) {
+                    let { first_name, last_name, department } = r.message;
+
+                    // Set department
+                    frappe.model.set_value(cdt, cdn, "departamento", department);
+
+                    // Set full name in "empleado_name" field
+                    frappe.model.set_value(cdt, cdn, "empleado_name", `${first_name || ''} ${last_name || ''}`.trim());
+                }
+            });
         }
     }
 

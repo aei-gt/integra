@@ -6,8 +6,10 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "name1",
-  "phone_no"
+  "phone_no",
+  "property_id",
+  "customer_name",
+  "message"
  ],
  "fields": [
   {
@@ -17,16 +19,28 @@
    "label": "Phone No"
   },
   {
-   "fieldname": "name1",
+   "fieldname": "property_id",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Name"
+   "label": "Property Id"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Message"
+  },
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Customer Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-11-08 22:27:36.940029",
+ "modified": "2024-11-19 16:43:57.083330",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "Whatsapp Number",

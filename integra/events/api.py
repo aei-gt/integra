@@ -104,7 +104,8 @@ def send_updated_whatsapp_message(doc, method=None):
 			if issue_type.custom_employee:
 				manager = frappe.get_doc("Employee", issue_type.custom_employee)
 				manager_number = manager.cell_number
-		message = f"Su solicitud ha sido procesada con referencia {doc.custom_id_document} y esta finalizado"
+		final_message = settings.final_message.replace("(document_id)", str(doc.custom_id_document))
+		message = final_message.replace
 		# message = f"Your emergency issue no. {doc.custom_id_document} is Closed."
 		if manager_number:
 			send_message(manager_number, message, api_key, url)

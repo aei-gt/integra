@@ -9,6 +9,7 @@
   "employee_message",
   "column_break_oikz",
   "client_message",
+  "final_message",
   "section_break_plap",
   "url",
   "column_break_qnvk",
@@ -64,12 +65,17 @@
    "fieldname": "api_key",
    "fieldtype": "Data",
    "label": "API Key"
+  },
+  {
+   "fieldname": "final_message",
+   "fieldtype": "Small Text",
+   "label": "Final Message"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-11-09 02:46:27.549467",
+ "modified": "2024-11-19 16:58:14.937060",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "Evolution Api Settings",

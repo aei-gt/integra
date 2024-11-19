@@ -3,16 +3,10 @@
 
 frappe.ui.form.on("Bulk Whatsapp Message", {
     refresh: function(frm) {
-        // Initially check if there are rows in 'whatsapp_number' when the form loads
         if(!frm.is_new()){
             toggle_send_button(frm);
         }
     },
-
-    // whatsapp_number: function(frm) {
-    //     // Whenever the 'whatsapp_number' child table is updated, check if button should be shown or not
-    //     toggle_send_button(frm);
-    // }
 });
 
 function toggle_send_button(frm) {

@@ -39,7 +39,7 @@ def send_new_client_whatsapp_message(doc, method=None):
 		if last_movement.empleado:
 			employee = frappe.get_doc("Employee", last_movement.empleado)
 			emp_message = settings.employee_message
-			emp_message = emp_message.replace("(employee_name)", str(employee.employee_name)).replace("(document_id)", str(doc.custom_id_document)).replace("(docname)", str(doc.name)).replace("(doc_url)", str(doc_name)).replace("(subject)", str(doc.subject))
+			emp_message = emp_message.replace("(employee_name)", f"{employee.first_name} {employee.last_name}").replace("(document_id)", str(doc.custom_id_document)).replace("(docname)", str(doc.name)).replace("(doc_url)", str(doc_name)).replace("(subject)", str(doc.subject))
 			send_message(employee.cell_number, emp_message, api_key, url)
 
 	# Send message to employee linked to issue type, if available
@@ -52,7 +52,7 @@ def send_new_client_whatsapp_message(doc, method=None):
 		if issue_type.custom_employee:                             
 			employee = frappe.get_doc("Employee", issue_type.custom_employee)
 			manager_message = settings.manager_message
-			manager_message = manager_message.replace("(employee_name)", str(employee.employee_name)).replace("(document_id)", str(doc.custom_id_document)).replace("(docname)", str(doc.name)).replace("(doc_url)", str(doc_name)).replace("(subject)", str(doc.subject))
+			manager_message = manager_message.replace("(employee_name)", f"{employee.first_name} {employee.last_name}").replace("(document_id)", str(doc.custom_id_document)).replace("(docname)", str(doc.name)).replace("(doc_url)", str(doc_name)).replace("(subject)", str(doc.subject))
 			send_message(employee.cell_number, manager_message, api_key, url)
 
 	
@@ -80,7 +80,7 @@ def send_updated_whatsapp_message(doc, method=None):
 		if last_movement.empleado:
 			employee = frappe.get_doc("Employee", last_movement.empleado)
 			emp_message = settings.employee_message
-			emp_message = emp_message.replace("(employee_name)", str(employee.employee_name)).replace("(document_id)", str(doc.custom_id_document)).replace("(docname)", str(doc.name)).replace("(doc_url)", str(doc_name)).replace("(subject)", str(doc.subject))
+			emp_message = emp_message.replace("(employee_name)", f"{employee.first_name} {employee.last_name}").replace("(document_id)", str(doc.custom_id_document)).replace("(docname)", str(doc.name)).replace("(doc_url)", str(doc_name)).replace("(subject)", str(doc.subject))
 			send_message(employee.cell_number, emp_message, api_key, url)
 	
 	# Set manager and send message if issue type has a custom employee
@@ -93,7 +93,7 @@ def send_updated_whatsapp_message(doc, method=None):
 		if issue_type.custom_employee:
 			manager = frappe.get_doc("Employee", issue_type.custom_employee)
 			manager_message = settings.manager_message
-			manager_message = manager_message.replace("(employee_name)", str(manager.employee_name)).replace("(document_id)", str(doc.custom_id_document)).replace("(docname)", str(doc.name)).replace("(doc_url)", str(doc_name)).replace("(subject)", str(doc.subject))
+			manager_message = manager_message.replace("(employee_name)", f"{manager.first_name} {manager.last_name}").replace("(document_id)", str(doc.custom_id_document)).replace("(docname)", str(doc.name)).replace("(doc_url)", str(doc_name)).replace("(subject)", str(doc.subject))
 			send_message(manager.cell_number, manager_message, api_key, url)
 	
 	# Send message if the issue status is closed

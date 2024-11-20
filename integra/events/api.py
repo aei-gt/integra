@@ -118,7 +118,7 @@ def send_updated_whatsapp_message(doc, method=None):
 			file_name = frappe.get_all("File", {"attached_to_name" : doc.name, "attached_to_doctype" : doc.doctype})
 			for row in file_name:
 				file_doc = frappe.get_doc("File", row.name)
-				file_path = frappe.get_site_path("private" if file_doc.is_private else "public", file_doc.file_url.lstrip("/"))
+				file_path = frappe.get_site_path(file_doc.file_url.lstrip("/"))
 				with open(file_path, "rb") as image_file:
 					base64_string = base64.b64encode(image_file.read()).decode('utf-8')
 				file_extension = file_doc.file_url.split('.')[-1].lower()

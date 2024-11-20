@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from datetime import datetime, timedelta
 
 def execute(filters=None):
     columns = get_columns()
@@ -19,13 +20,17 @@ def get_columns():
     ]
 
 def get_data(filters):
-    conditions = ""
-    if filters.get("employee"):
-        conditions += " AND employee = %(employee)s"
-    if filters.get("from_date") and filters.get("to_date"):
-        conditions += " AND access_date BETWEEN %(from_date)s AND %(to_date)s"
+	if filters.get("to_date"):
+		to_date = datetime.strptime(filters["to_date"], "%Y-%m-%d")
+		filters["to_date"] = (to_date + timedelta(days=1)).strftime("%Y-%m-%d")
 
-    attendance_records = frappe.db.sql("""
+	conditions = ""
+	if filters.get("employee"):
+		conditions += " AND employee = %(employee)s"
+	if filters.get("from_date") and filters.get("to_date"):
+		conditions += " AND access_date BETWEEN %(from_date)s AND %(to_date)s"
+
+	attendance_records = frappe.db.sql("""
 		SELECT
 			e.name as employee,
 			e.employee_name as full_name,
@@ -48,4 +53,4 @@ def get_data(filters):
 	""".format(conditions=conditions), filters, as_dict=1)
 
 
-    return attendance_records
+	return attendance_records

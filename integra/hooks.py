@@ -133,6 +133,9 @@ doc_events = {
     "Issue": {
 		"after_insert": "integra.events.api.send_new_client_whatsapp_message",
         "on_update": "integra.events.api.send_updated_whatsapp_message",
+    },
+    "Sales Invoice": {
+        "validate": "integra.events.custom_si.validate_item_types"
     }
 }
 

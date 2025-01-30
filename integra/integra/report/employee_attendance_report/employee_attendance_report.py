@@ -12,15 +12,15 @@ def execute(filters=None):
 def get_columns():
     return [
         {"fieldname": "employee", "label": "Employee", "fieldtype": "Link", "options": "Employee", "width": 150},
-        {"fieldname": "full_name", "label": "Employee Name", "fieldtype": "Data", "width": 300},
-        {"fieldname": "employee_id", "label": "Hik Vision ID", "fieldtype": "Data", "width": 200},
+        {"fieldname": "full_name", "label": "Employee Name", "fieldtype": "Data", "width": 250},
+        {"fieldname": "employee_id", "label": "Hik Vision ID", "fieldtype": "Data", "width": 150},
         {"fieldname": "date", "label": "Date", "fieldtype": "Date", "width": 140},
         {"fieldname": "entry", "label": "Entry", "fieldtype": "Time", "width": 120},
         {"fieldname": "exit_time", "label": "Exit", "fieldtype": "Time", "width": 120},
-        {"fieldname": "entry_issue", "label": "Entry Issue", "fieldtype": "Data", "width": 100},
-        {"fieldname": "exit_issue", "label": "Exit Issue", "fieldtype": "Data", "width": 100},
-        {"fieldname": "extra_time", "label": "Extra Time", "fieldtype": "Data", "width": 120},
-        {"fieldname": "late_time", "label": "Late Time", "fieldtype": "Data", "width": 150},
+        {"fieldname": "entry_issue", "label": "Entry Issue", "fieldtype": "Data", "width": 80},
+        {"fieldname": "exit_issue", "label": "Exit Issue", "fieldtype": "Data", "width": 80},
+        {"fieldname": "extra_time", "label": "Extra Time", "fieldtype": "Data", "width": 140},
+        {"fieldname": "late_time", "label": "Late Time", "fieldtype": "Data", "width": 140},
     #    {
     #         "fieldname": "total_work_time", 
     #         "label": "Total Working Hours", 

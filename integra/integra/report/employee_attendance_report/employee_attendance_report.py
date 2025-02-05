@@ -1,5 +1,5 @@
-
-
+# Copyright (c) 2025, AEI and contributors
+# For license information, please see license.txt
 
 import frappe
 from datetime import datetime, timedelta

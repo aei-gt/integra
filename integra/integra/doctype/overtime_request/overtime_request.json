@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "employee",
+  "data_jkme",
   "date",
   "from_time",
   "till_time",
@@ -56,18 +57,25 @@
   {
    "fieldname": "from_time",
    "fieldtype": "Time",
-   "label": "From Time"
+   "in_list_view": 1,
+   "label": "From Time",
+   "reqd": 1
   },
   {
    "fieldname": "till_time",
    "fieldtype": "Time",
-   "label": "Till Time"
+   "in_list_view": 1,
+   "label": "Till Time",
+   "reqd": 1
   },
   {
+   "fetch_from": "employee.shift_request_approver",
+   "fetch_if_empty": 1,
    "fieldname": "overtime_approver",
    "fieldtype": "Link",
    "label": "Overtime Approver",
-   "options": "Employee"
+   "options": "User",
+   "read_only": 1
   },
   {
    "fieldname": "overtime_hours",
@@ -80,12 +88,18 @@
    "fieldtype": "Select",
    "label": "Overtime Status",
    "options": "\nDraft\nApproved\nDeclined"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "data_jkme",
+   "fieldtype": "Data",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-12 12:35:52.440232",
+ "modified": "2025-02-12 13:00:34.977757",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "Overtime Request",

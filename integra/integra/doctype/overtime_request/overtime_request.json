@@ -6,7 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "employee",
-  "data_jkme",
+  "full_name",
   "date",
   "from_time",
   "till_time",
@@ -91,15 +91,16 @@
   },
   {
    "fetch_from": "employee.employee_name",
-   "fieldname": "data_jkme",
+   "fieldname": "full_name",
    "fieldtype": "Data",
+   "label": "Full Name",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-12 13:00:34.977757",
+ "modified": "2025-02-12 13:59:22.654456",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "Overtime Request",

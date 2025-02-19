@@ -40,6 +40,14 @@ def get_data(filters):
         conditions += " AND employee = %(employee)s"
     if filters.get("from_date") and filters.get("to_date"):
         conditions += " AND access_date_time BETWEEN %(from_date)s AND %(to_date)s"
+    if filters.get("from_date") and filters.get("to_date"):
+        conditions += " AND h.access_date_time BETWEEN %(from_date)s AND %(to_date)s"
+    if filters.get("custom_renglon"):
+        conditions += " AND e.custom_renglon = %(custom_renglon)s"
+    if filters.get("designation"):
+        conditions += " AND e.designation = %(designation)s"
+    if filters.get("department"):
+        conditions += " AND e.department = %(department)s"
         
     attendance_records = frappe.db.sql("""
         SELECT

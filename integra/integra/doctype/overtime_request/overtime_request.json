@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:HE-{employee}-{###}",
  "creation": "2025-02-12 09:08:56.434063",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -88,7 +89,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Overtime Status",
-   "options": "\nDraft\nApproved\nDeclined"
+   "options": "\nDraft\nApproved\nRejected"
   },
   {
    "fetch_from": "employee.employee_name",
@@ -108,10 +109,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-18 09:11:02.028957",
+ "modified": "2025-02-18 11:53:21.657026",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "Overtime Request",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

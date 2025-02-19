@@ -39,7 +39,7 @@ class OvertimeRequest(Document):
 			doc.save(ignore_permissions=True)
 			doc.reload()
 			frappe.db.commit()
-			frappe.msgprint(f"{overtime_hours}")
+			# frappe.msgprint(f"{overtime_hours}")
 
 
 

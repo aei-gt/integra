@@ -1,0 +1,46 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-02-19 05:47:56.156842",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "overtime_request",
+  "date",
+  "over_time"
+ ],
+ "fields": [
+  {
+   "fieldname": "overtime_request",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Overtime Request",
+   "options": "Overtime Request"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date"
+  },
+  {
+   "fieldname": "over_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Over Time"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-02-19 05:49:30.733834",
+ "modified_by": "Administrator",
+ "module": "INTEGRA",
+ "name": "Employee Overtime Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

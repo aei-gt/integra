@@ -1,5 +1,5 @@
-
-
+# Copyright (c) 2025, AEI and contributors
+# For license information, please see license.txt
 
 import frappe
 from datetime import datetime, timedelta
@@ -21,6 +21,7 @@ def get_columns():
         {"fieldname": "exit_issue", "label": "Exit Issue", "fieldtype": "Data", "width": 80},
         {"fieldname": "extra_time", "label": "Extra Time", "fieldtype": "Data", "width": 140},
         {"fieldname": "late_time", "label": "Late Time", "fieldtype": "Data", "width": 140},
+        {"fieldname": "over_time", "label": "OverTime", "fieldtype": "Data", "width": 100},
     #    {
     #         "fieldname": "total_work_time", 
     #         "label": "Total Working Hours", 
@@ -37,30 +38,41 @@ def get_data(filters):
 
     conditions = ""
     if filters.get("employee"):
-        conditions += " AND employee = %(employee)s"
+        conditions += " AND e.name = %(employee)s"
     if filters.get("from_date") and filters.get("to_date"):
-        conditions += " AND access_date_time BETWEEN %(from_date)s AND %(to_date)s"
+        conditions += " AND h.access_date_time BETWEEN %(from_date)s AND %(to_date)s"
+    if filters.get("custom_renglon"):
+        conditions += " AND e.custom_renglon = %(custom_renglon)s"
+    if filters.get("designation"):
+        conditions += " AND e.designation = %(designation)s"
+    if filters.get("department"):
+        conditions += " AND e.department = %(department)s"
         
     attendance_records = frappe.db.sql("""
         SELECT
-            e.name as employee,
-            e.employee_name as full_name,
+            e.name AS employee,
+            e.employee_name AS full_name,
             h.employee_id,
-            h.access_date_time as date,
-            MIN(h.access_time) as entry,
-            MAX(h.access_time) as exit_time,
+            h.access_date_time AS date,
+            MIN(h.access_time) AS entry,
+            MAX(h.access_time) AS exit_time,
             s.start_time,
-            s.end_time 
-        FROM
+            s.end_time,
+            COALESCE(od.over_time, 'No Overtime') AS over_time
+        FROM 
             `tabHik Vision Attendance` h
         JOIN
-            `tabEmployee` e
-        ON
+            `tabEmployee` e 
+        ON 
             h.employee_id = e.attendance_device_id
         JOIN
             `tabShift Type` s 
         ON 
             e.default_shift = s.name
+        LEFT JOIN 
+            `tabEmployee Overtime Details` od 
+        ON 
+            od.parent = e.name AND od.date = h.access_date_time
         WHERE
             1 = 1 {conditions}
         GROUP BY

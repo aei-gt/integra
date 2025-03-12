@@ -216,7 +216,13 @@ scheduler_events = {
 
 # User Data Protection
 # --------------------
-
+doc_events = {
+	"Customer": {
+        "autoname": "terra.events.customer.autoname",
+        
+	}
+    
+}
 # user_data_fields = [
 # 	{
 # 		"doctype": "{doctype_1}",
@@ -252,3 +258,4 @@ scheduler_events = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+fixtures = ["Workflow","Workflow State"]

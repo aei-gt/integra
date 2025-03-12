@@ -1,0 +1,136 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:HE-{employee}-{###}",
+ "creation": "2025-02-12 09:08:56.434063",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "full_name",
+  "date",
+  "from_time",
+  "till_time",
+  "overtime_hours",
+  "column_break_oxth",
+  "company",
+  "overtime_approver",
+  "status",
+  "approver_mobile",
+  "section_break_ckue",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_ckue",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Overtime Request",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "column_break_oxth",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "from_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "From Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "till_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Till Time",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.shift_request_approver",
+   "fetch_if_empty": 1,
+   "fieldname": "overtime_approver",
+   "fieldtype": "Link",
+   "label": "Overtime Approver",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overtime_hours",
+   "fieldtype": "Time",
+   "label": "Overtime Hours",
+   "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Overtime Status",
+   "options": "\nDraft\nApproved\nRejected"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "overtime_approver.mobile_no",
+   "fieldname": "approver_mobile",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Approver Mobile"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-02-18 11:53:21.657026",
+ "modified_by": "Administrator",
+ "module": "INTEGRA",
+ "name": "Overtime Request",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

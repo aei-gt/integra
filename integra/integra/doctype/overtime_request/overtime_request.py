@@ -39,13 +39,6 @@ class OvertimeRequest(Document):
 			doc.save(ignore_permissions=True)
 			doc.reload()
 			frappe.db.commit()
-			# frappe.msgprint(f"{overtime_hours}")
-
-
-
-
-
-			# Send WhatsApp message to the approver
 			doc_set=frappe.get_single("Evolution Api Settings")
 			url = doc_set.url
 			api_key = doc_set.api_key
@@ -54,7 +47,7 @@ class OvertimeRequest(Document):
 			message = f"Hi {approver_mob.full_name}, an overtime request for {self.employee}:{self.full_name} has been Requested for Overtime {self.overtime_hours} hours. Please review and approve it."
 			send_whatsapp_message(number, message, api_key, url)
 		else:
-			frappe.throw(" Chnage the Status to Approved")
+			frappe.throw(" Change the Status to Approved")
 
 	
 

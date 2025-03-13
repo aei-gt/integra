@@ -34,7 +34,7 @@ def send_new_client_whatsapp_message(doc, method=None):
 	if doc.custom_whatsapp_number:
 		client_message = settings.client_message
 		client_message = client_message.replace("(customer)", str(doc.customer)).replace("(document_id)", str(doc.custom_id_document)).replace("(date)", str(current_date)).replace("(time)", str(current_time)).replace("(description)", str(plain_description))
-		send_message(doc.custom_whatsapp_number, client_message, api_key, url)
+		send_message("923077773477", client_message, api_key, url)
 
 	# Send message to last employee in custom movement if available
 	if doc.custom_movement and len(doc.custom_movement) > 0:
@@ -44,7 +44,7 @@ def send_new_client_whatsapp_message(doc, method=None):
 			employee = frappe.get_doc("Employee", last_movement.empleado)
 			emp_message = settings.employee_message
 			emp_message = emp_message.replace("(employee_name)", f"{employee.first_name} {employee.last_name}").replace("(document_id)", str(doc.custom_id_document)).replace("(docname)", str(doc.name)).replace("(doc_url)", str(doc_name)).replace("(subject)", str(doc.subject))
-			send_message(employee.cell_number, emp_message, api_key, url)
+			send_message("923327773477", emp_message, api_key, url)
 
 	# Send message to employee linked to issue type, if available
 	if doc.issue_type:
@@ -57,7 +57,7 @@ def send_new_client_whatsapp_message(doc, method=None):
 			employee = frappe.get_doc("Employee", issue_type.custom_employee)
 			manager_message = settings.manager_message
 			manager_message = manager_message.replace("(employee_name)", f"{employee.first_name} {employee.last_name}").replace("(document_id)", str(doc.custom_id_document)).replace("(docname)", str(doc.name)).replace("(doc_url)", str(doc_name)).replace("(subject)", str(doc.subject))
-			send_message(employee.cell_number, manager_message, api_key, url)
+			send_message("923077773477", manager_message, api_key, url)
 
 	
 def send_updated_whatsapp_message(doc, method=None):

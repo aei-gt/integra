@@ -10,6 +10,8 @@
   "column_break_oikz",
   "client_message",
   "final_message",
+  "section_break_kqaj",
+  "overtime_request",
   "section_break_plap",
   "url",
   "column_break_qnvk",
@@ -70,12 +72,21 @@
    "fieldname": "final_message",
    "fieldtype": "Small Text",
    "label": "Final Message"
+  },
+  {
+   "fieldname": "section_break_kqaj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "overtime_request",
+   "fieldtype": "Small Text",
+   "label": "OverTime Request"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-11-19 16:58:14.937060",
+ "modified": "2025-03-12 21:05:57.496566",
  "modified_by": "Administrator",
  "module": "INTEGRA",
  "name": "Evolution Api Settings",

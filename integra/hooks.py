@@ -56,7 +56,7 @@ doctype_js = {"Salary Structure Assignment" : "public/js/salary_structure_assign
 # Generators
 # ----------
 
-# automatically create page for each record of this doctype
+# automatically create page for each record odoc_events = {
 # website_generators = ["Web Page"]
 
 # Jinja
@@ -137,7 +137,7 @@ doc_events = {
     },
     "Sales Invoice": {
         "validate": "integra.events.custom_si.validate_item_types"
-    }
+    },
 }
 
 # Scheduled Tasks
@@ -216,13 +216,7 @@ scheduler_events = {
 
 # User Data Protection
 # --------------------
-doc_events = {
-	"Customer": {
-        "autoname": "terra.events.customer.autoname",
-        
-	}
-    
-}
+
 # user_data_fields = [
 # 	{
 # 		"doctype": "{doctype_1}",

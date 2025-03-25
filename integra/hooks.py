@@ -216,13 +216,6 @@ scheduler_events = {
 
 # User Data Protection
 # --------------------
-doc_events = {
-	"Customer": {
-        "autoname": "terra.events.customer.autoname",
-        
-	}
-    
-}
 # user_data_fields = [
 # 	{
 # 		"doctype": "{doctype_1}",

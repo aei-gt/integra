@@ -31,7 +31,8 @@ app_license = "mit"
 doctype_js = {"Salary Structure Assignment" : "public/js/salary_structure_assignment.js",
               "Employee" : "public/js/employee.js",
               "Issue" : "public/js/issue.js",
-              "Sales Invoice" : "public/js/custom_si.js"}
+              "Sales Invoice" : "public/js/custom_si.js",
+              "Salary Slip" : "public/js/custom_salary_slp.js"}
 # doctype_js = {"Employee" : "public/js/employee.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -251,4 +252,19 @@ scheduler_events = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
-fixtures = ["Workflow","Workflow State"]
+# fixtures = ["Workflow","Workflow State"]
+fixtures = [
+    {
+        "dt": "Custom Field",
+        "filters": [
+            [
+                "name",
+                "in",
+                [
+                    "Salary Slip-custom_deduccion_total",
+                    "Salary Slip-custom_pago_neto"
+                ],
+            ]
+        ],
+    },
+]

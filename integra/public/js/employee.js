@@ -1,9 +1,8 @@
 frappe.ui.form.on('Employee', {
     refresh: function(frm) {
         frm.add_custom_button(__('View Hik Vision Attendance Report'), function() {
-                    // Open the custom report with the selected employee as a filter
                     frappe.set_route('query-report', 'Hik Vision Attendance Report', {
-                        'employee': frm.doc.name  // Pass the selected employee's name
+                        'employee': frm.doc.name
                     });
                 });
     },
@@ -17,7 +16,6 @@ frappe.ui.form.on('Employee', {
             callback: (r) => {
                 if (r.message) {
                     let data = r.message;
-                    // console.log(data);
                     for (let row of data) {
                         frm.add_child('custom_records', {
                             id: row.name,
@@ -27,7 +25,6 @@ frappe.ui.form.on('Employee', {
                             access_date: row.access_date,
                         });
                     }
-
                     frm.refresh_field('custom_records');
                 }
             }

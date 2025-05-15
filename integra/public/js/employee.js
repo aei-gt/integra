@@ -1,13 +1,12 @@
 frappe.ui.form.on('Employee', {
     refresh: function(frm) {
-        frm.add_custom_button(__('View Hik Attendance Report'), function() {
+        frm.add_custom_button(__('View Hik Vision Attendance Report'), function() {
                     // Open the custom report with the selected employee as a filter
-                    frappe.set_route('query-report', 'Employee Attendance Report', {
+                    frappe.set_route('query-report', 'Hik Vision Attendance Report', {
                         'employee': frm.doc.name  // Pass the selected employee's name
                     });
                 });
     },
-    
     attendance_device_id: function(frm) {
         frm.clear_table('custom_records');
         frappe.call({
